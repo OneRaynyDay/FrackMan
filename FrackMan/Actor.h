@@ -15,11 +15,13 @@ class Actor : public GraphObject{
 public:
     // It must have a simple constructor and destructor
     // These 3 parameters are needed because of the base class
-    Actor(int imageID, int startX, int startY):GraphObject(imageID, startX, startY){
+    Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0):GraphObject(imageID, startX, startY, dir, size, depth){
         // It (or its base class) must make itself visible via a call to setVisible(true);
         setVisible(true);
     }
-    ~Actor();
+    virtual ~Actor(){
+        setVisible(false);
+    };
     
     // It must have a single virtual method called doSomething() that can
     // be called by the World to get one of the game’s actors to do
