@@ -1,5 +1,6 @@
 #include "StudentWorld.h"
 #include <string>
+#include <iostream>
 using namespace std;
 
 GameWorld* createStudentWorld(string assetDir)
@@ -8,6 +9,26 @@ GameWorld* createStudentWorld(string assetDir)
 }
 
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
+StudentWorld::~StudentWorld()
+{
+    for(int i = dirt.size()-1; i>=0; i--){
+        delete dirt[i];
+        dirt.pop_back();
+    }
+    for(int i = actor.size()-1; i>=0; i--){
+        delete actor[i];
+        actor.pop_back();
+    }
+    delete player;
+}
+
+bool StudentWorld::sparseEnough(int x, int y){
+    for(int i = 0; i < actor.size(); i++){
+        if(dist(actor[i]->getX(), actor[i]->getY(), x, y) < CHARACTER_SPACING)
+            return false;
+    }
+    return true;
+}
 
 int StudentWorld::init(){
     player = new FrackMan(this);
@@ -20,6 +41,29 @@ int StudentWorld::init(){
             dirt.push_back(currDirt);
         }
     }
+    
+    // Take care of level stats
+    curLevel++;
+    // boulders
+    int B = min(curLevel / 2 + 2, 6);
+    // gold nuggets
+    int G = max(5-curLevel / 2, 2);
+    // barrels
+    int L = min(2 + curLevel, 20);
+    curBarrels = L;
+    std::cout<<"Current barrel num : " << curBarrels<<endl;
+    /*load the barrels*/
+    for(int i = 0; i < L; i++){
+        int x = -1, y = -1; // This will get through the do while at least once.
+        do{
+            x = (int)((double) rand() / (RAND_MAX) * WORLD_X);
+            y = (int)((double) rand() / (RAND_MAX) * DIRT_ROWS);
+        }while(!sparseEnough(x, y));
+        Barrel* barrel = new Barrel(this, player, x, y);
+        std::cout<<"x : " << x << " y : " << y;
+        actor.push_back(barrel);
+    }
+    
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -31,8 +75,25 @@ int StudentWorld::move(){
      actors (e.g., Nuggets or Boulders) at this point – just the
      FrackMan.
      */
+    if(curBarrels == 0)
+        return GWSTATUS_FINISHED_LEVEL;
+    if(player->isDead())
+        return GWSTATUS_PLAYER_DIED;
     player->doSomething();
     //        decLives();
+    
+    /* removes things */
+    for (vector<Actor*>::iterator it = actor.begin() ; it != actor.end();){
+        if((*it)->isDead()){
+            delete *it;
+            it = actor.erase(it);
+        }
+        else{
+            (*it)->doSomething();
+            it++;
+        }
+    }
+
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -57,13 +118,23 @@ void StudentWorld::cleanUp(){
 }
 
 void StudentWorld::removeDirt(int x, int y, int size){
-    for(int i = 0; i < dirt.size(); i++){
-        if(inRange(dirt[i]->getX(), dirt[i]->getY(), x, y, size, size)){
+    bool flag = false;
+    for (vector<Dirt*>::iterator it = dirt.begin() ; it != dirt.end();){
+        if(inRange((*it)->getX(), (*it)->getY(), x, y, size, size)){
             //remove dirt
-            delete dirt[i];
-            dirt.erase(dirt.begin() + i);
-            //play sound
-            playSound(SOUND_DIG);
+            delete *it;
+            it = dirt.erase(it);
+            flag = true;
+        }
+        else{
+            it++;
         }
     }
+    //play sound
+    if(flag)
+        playSound(SOUND_DIG);
+}
+
+void squirt(int x, int y, Actor::Direction dir){
+    
 }

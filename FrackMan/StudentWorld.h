@@ -7,8 +7,12 @@
 #include "GameConstants.h"
 #include "Dirt.h"
 #include "FrackMan.h"
+#include "Barrel.h"
 #include <vector>
 #include <string>
+#include <cmath>
+#include <random>
+
 
 using namespace std;
 
@@ -19,21 +23,25 @@ class FrackMan;
 class StudentWorld : public GameWorld
 {
     static const int DIRT_ROWS = 60;
+    static const int WORLD_X = 64;
+    static const int WORLD_Y = 64;
+    static const int CHARACTER_SPACING = 6;
 public:
     // Implement a constructor for this class that initializes all member
     // variables required for proper gameplay.
 	StudentWorld(std::string assetDir)
 	 : GameWorld(assetDir)
 	{
+        x_size = WORLD_X;
+        y_size = WORLD_Y;
+        curLevel = 0;
+        curBarrels = 0;
         /* MORE TO WRITE HERE ... */
 	}
     // Implement a destructor for this class that frees any remaining
     // dynamically allocated data that has not yet been freed at the time
     // the class is destroyed (e.g., the FrackMan and all remaining Dirt).
-    virtual ~StudentWorld(){
-        cleanUp();
-    }
-    
+    virtual ~StudentWorld();
     /*
     Implement the init() method in this class. It must:
     1. Create the FrackMan object and insert it into the oil field at
@@ -61,8 +69,24 @@ public:
          */
         return (tx >= x && tx <= x + xt) && (ty >= y && ty <= y + yt);
     }
-    void squirt(int x, int y, Actor::Direction dir);
-
+    bool inBound(int x, int y){
+        return (x >= 0 && x < x_size) && (y >= 0 && y < y_size);
+    }
+    void squirt(int x, int y, Actor::Direction dir){};
+    /*
+     No distributed game object may be within a radius (Euclidian distance) of 6 squares of any other distributed game object
+     */
+    bool sparseEnough(int x, int y);
+    
+    int dist(int x1, int y1, int x2, int y2){
+        int d = (int)(pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5));
+        //std::cout<< "x1 : " << x1 << " x2 : " << x2 << " y1 : " << y1 << " y2 : " << y2 << "d : " << d << std::endl;
+        return d;
+    }
+    
+    void decreaseBarrels(){
+        curBarrels--;
+    }
 private:
     /* Add any private member variables to this class required to keep
     track of all Dirt in the oil field as well as the FrackMan object.
@@ -72,7 +96,9 @@ private:
     FrackMan* player;
     vector<Actor*> actor;
     /* MORE TO WRITE HERE ... */
-    
+    int x_size, y_size;
+    int curLevel;
+    int curBarrels;
 };
 
 #endif // STUDENTWORLD_H_

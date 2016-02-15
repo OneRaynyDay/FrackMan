@@ -10,4 +10,5 @@ dependencies: \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/StudentWorld.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/GameWorld.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Dirt.h \
-  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/FrackMan.h
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/FrackMan.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Barrel.h

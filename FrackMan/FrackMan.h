@@ -12,18 +12,17 @@
 #define FrackMan_h
 
 // It must have an Image ID of IID_PLAYER
-#include "Actor.h"
-#include "StudentWorld.h"
 #include "GameConstants.h"
+#include "StudentWorld.h"
+#include "Actor.h"
 #include <vector>
 
 using namespace std;
 
 class StudentWorld;
-
 /* The fact that it depends on Actor is TENTATIVE. we might change this! */
 // It (or its base class) must make itself visible via a call to setVisible(true);
-class FrackMan : public Actor{
+class FrackMan : public Human{
     
 static const int START_Y = 60;
 static const int START_X = 30;
@@ -38,7 +37,7 @@ public:
     // for more details on where to initially place the FrackMan on the screen.
     
     // from pg 28: The FrackMan must always start at location x=30, y=60
-    FrackMan(StudentWorld* w) : Actor(IID_PLAYER, START_X, START_Y){
+    FrackMan(StudentWorld* w) : Human(INIT_HITPOINT, w, IID_PLAYER, START_X, START_Y){
         /* The FrackMan, in its default state:
          a. Is given 10 hit points
          b. Is given 5 units of water to squirt with his squirt gun (he may pick up
@@ -46,11 +45,10 @@ public:
          c. Is given 1 sonar charge
          d. Starts out with zero gold nuggets
          e. Should start facing rightward*/
-        hitpoint = INIT_HITPOINT;
         water = INIT_WATER;
         sonar = INIT_SONAR;
         nugget = INIT_NUGGET;
-        world = w;
+        points = 0;
     };
     virtual ~FrackMan(){};
     
@@ -65,16 +63,40 @@ public:
     animate its movement it around the oil field!
      */
     virtual void doSomething();
-    void move(int keyPressed);
+    
+    Direction keyToDir(int keyPressed){
+        switch(keyPressed){
+            case KEY_PRESS_LEFT:
+                return left;
+                break;
+            case KEY_PRESS_RIGHT:
+                return right;
+                break;
+            case KEY_PRESS_UP:
+                return up;
+                break;
+            case KEY_PRESS_DOWN:
+                return down;
+                break;
+        }
+        return none;
+    }
+    
+    void increasePoints(int pts){
+        points += pts;
+    }
+    
+    int getPoints(){
+        return points;
+    }
 private:
     // You may add any public/private methods and private member
     // variables to your player class as you see fit, so long as you use
     // good object oriented programming style (e.g., you must not duplicate functionality across classes).
-    StudentWorld* world;
-    int hitpoint;
     int water;
     int sonar;
     int nugget;
+    int points;
 };
 
 

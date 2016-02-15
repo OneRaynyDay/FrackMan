@@ -2,6 +2,7 @@
 #define ACTOR_H_
 
 #include "GraphObject.h"
+#include <cmath>
 
 // Students:  Add code to this file, Actor.cpp, StudentWorld.h, and StudentWorld.cpp
 
@@ -11,18 +12,20 @@
 
 // It (or its base class) must make itself visible via a call to setVisible(true); (already done via inheritance)
 
+class StudentWorld;
+
 class Actor : public GraphObject{
 public:
     // It must have a simple constructor and destructor
     // These 3 parameters are needed because of the base class
     Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0):GraphObject(imageID, startX, startY, dir, size, depth){
         // It (or its base class) must make itself visible via a call to setVisible(true);
-        setVisible(true);
     }
     virtual ~Actor(){
         setVisible(false);
     };
-    
+    virtual void consume() = 0;
+    virtual bool isDead() = 0;
     // It must have a single virtual method called doSomething() that can
     // be called by the World to get one of the game’s actors to do
     // something.
@@ -35,4 +38,92 @@ private:
 };
 
 
+/* A human is a class that represents:
+ FrackMan
+ AngryProtester
+ HardcoreAngryProtestor
+ with the following properties:
+ -can move
+ -can change directions
+ -has size of 1
+ -can pick up items
+ */
+
+class Human : public Actor{
+public:
+    Human(int hp, StudentWorld* w, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0):Actor(imageID, startX, startY, dir, size, depth){
+        world = w;
+        // It (or its base class) must make itself visible via a call to setVisible(true);
+        setVisible(true);
+        hitpoints = hp;
+    }
+    virtual ~Human(){};
+    virtual void doSomething() = 0;
+    virtual bool moveDelta(Direction dir, int& xdir, int& ydir);
+    virtual void changeState(Direction dir);
+    StudentWorld* getWorld(){
+        return world;
+    }
+    virtual void consume(){
+        if(hitpoints > 0)
+            hitpoints--;
+    }
+    virtual bool isDead(){
+        return hitpoints <= 0;
+    }
+private:
+    int hitpoints;
+    StudentWorld* world;
+};
+
+/* An item is a class that represents:
+ Water
+ Sonar
+ Gold Nugget
+ Barrels
+ And it has the following properties:
+ -does not move
+ -can be picked up by humans
+ -has size 1
+ -has depth 2
+ -randomly initialized startX and startY's
+ */
+class FrackMan;
+
+class Item : public Actor{
+public:
+    Item(StudentWorld* w, FrackMan* f, int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 2):Actor(imageID, startX, startY, dir, size, depth){
+        world = w;
+        player = f;
+        setVisible(false);
+        discovered = false;
+        dead = false;
+    }
+    virtual ~Item(){};
+    virtual void doSomething() = 0;
+    void setDiscovered(){
+        setVisible(true);
+        discovered = true;
+    }
+    bool isDiscovered(){
+        return discovered;
+    }
+    FrackMan* getPlayer(){
+        return player;
+    }
+    StudentWorld* getWorld(){
+        return world;
+    }
+    virtual void consume(){
+        dead = true;
+    }
+    virtual bool isDead(){
+        return dead;
+    }
+private:
+    FrackMan* player;
+    StudentWorld* world;
+    bool discovered;
+    bool dead;
+};
 #endif // ACTOR_H_
