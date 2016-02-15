@@ -33,7 +33,8 @@ public:
     }
     virtual ~Barrel(){};
     virtual void doSomething();
-    
+    virtual int getPoints(){ return SCORE_INCREASE; }
+    virtual int getSound(){ return SOUND_FOUND_OIL; }
 private:
     
 };

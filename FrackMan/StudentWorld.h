@@ -8,6 +8,8 @@
 #include "Dirt.h"
 #include "FrackMan.h"
 #include "Barrel.h"
+#include "Nugget.h"
+#include "Protester.h"
 #include <vector>
 #include <string>
 #include <cmath>
@@ -62,10 +64,16 @@ public:
     virtual void cleanUp();
 
     void removeDirt(int x, int y, int size);
+    
+    //this is necessary for nuggets
+    vector<Protester*> getProtesters();
+    void addActor(Actor* act);
+    
     bool inRange(int tx, int ty, int x, int y, int xt, int yt){
-        /* tx, ty : test x test y
-         * x, y : start x start y
-         * xt, yt : x thresh y thresh 
+        /* 
+         tx, ty : test x test y
+         x, y : start x start y
+         xt, yt : x thresh y thresh
          */
         return (tx >= x && tx <= x + xt) && (ty >= y && ty <= y + yt);
     }
@@ -77,7 +85,7 @@ public:
      No distributed game object may be within a radius (Euclidian distance) of 6 squares of any other distributed game object
      */
     bool sparseEnough(int x, int y);
-    
+    void generateCoord(int& x, int& y);
     int dist(int x1, int y1, int x2, int y2){
         int d = (int)(pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5));
         //std::cout<< "x1 : " << x1 << " x2 : " << x2 << " y1 : " << y1 << " y2 : " << y2 << "d : " << d << std::endl;

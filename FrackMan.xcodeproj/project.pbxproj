@@ -16,6 +16,7 @@
 		544B8BCD1C71590A0029622F /* Dirt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BCC1C71590A0029622F /* Dirt.cpp */; settings = {ASSET_TAGS = (); }; };
 		544B8BD01C7159FF0029622F /* FrackMan.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BCF1C7159FF0029622F /* FrackMan.cpp */; settings = {ASSET_TAGS = (); }; };
 		544B8BDC1C71CC8E0029622F /* Barrel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BDB1C71CC8E0029622F /* Barrel.cpp */; settings = {ASSET_TAGS = (); }; };
+		544B8BE01C71F44A0029622F /* Nugget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BDF1C71F44A0029622F /* Nugget.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -55,6 +56,9 @@
 		544B8BCF1C7159FF0029622F /* FrackMan.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FrackMan.cpp; sourceTree = "<group>"; };
 		544B8BDB1C71CC8E0029622F /* Barrel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Barrel.cpp; sourceTree = "<group>"; };
 		544B8BDD1C71CCA60029622F /* Barrel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Barrel.h; sourceTree = "<group>"; };
+		544B8BDE1C71F2510029622F /* Nugget.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Nugget.h; sourceTree = "<group>"; };
+		544B8BDF1C71F44A0029622F /* Nugget.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Nugget.cpp; sourceTree = "<group>"; };
+		544B8BE11C71FAB90029622F /* Protester.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Protester.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +115,9 @@
 				544B8BCF1C7159FF0029622F /* FrackMan.cpp */,
 				544B8BDD1C71CCA60029622F /* Barrel.h */,
 				544B8BDB1C71CC8E0029622F /* Barrel.cpp */,
+				544B8BDE1C71F2510029622F /* Nugget.h */,
+				544B8BDF1C71F44A0029622F /* Nugget.cpp */,
+				544B8BE11C71FAB90029622F /* Protester.h */,
 			);
 			path = FrackMan;
 			sourceTree = "<group>";
@@ -172,6 +179,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				544B8BCD1C71590A0029622F /* Dirt.cpp in Sources */,
+				544B8BE01C71F44A0029622F /* Nugget.cpp in Sources */,
 				4B5BB27B1A911293009A9A96 /* GameWorld.cpp in Sources */,
 				4B5BB27C1A911293009A9A96 /* StudentWorld.cpp in Sources */,
 				544B8BDC1C71CC8E0029622F /* Barrel.cpp in Sources */,

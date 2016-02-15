@@ -23,18 +23,7 @@
  picked up. Once all Barrels on the level have been picked up, the player finishes the level and may advance to the next level. */
 
 void Barrel::doSomething(){
-    int dist = getWorld()->dist(getX(), getY(), getPlayer()->getX(), getPlayer()->getY());
-    if(!isDiscovered()){
-        if(dist <= 4){
-            setDiscovered();
-            return;
-        }
-    }
-    if(dist <= 3){
-        consume();
-        getWorld()->playSound(SOUND_DIG);
-        getPlayer()->increasePoints(SCORE_INCREASE);
+    if(checkDiscovered(getPlayer())){
         getWorld()->decreaseBarrels();
     }
-    
 }

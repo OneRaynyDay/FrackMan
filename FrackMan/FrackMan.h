@@ -14,6 +14,7 @@
 // It must have an Image ID of IID_PLAYER
 #include "GameConstants.h"
 #include "StudentWorld.h"
+#include "Nugget.h"
 #include "Actor.h"
 #include <vector>
 
@@ -26,6 +27,7 @@ class FrackMan : public Human{
     
 static const int START_Y = 60;
 static const int START_X = 30;
+static const int GOLD_TICKS = 100;
 static const int INIT_HITPOINT = 10;
 static const int INIT_WATER = 5;
 static const int INIT_SONAR = 1;
@@ -82,12 +84,21 @@ public:
         return none;
     }
     
+    int getPoints(){
+        return points;
+    }
+    
     void increasePoints(int pts){
         points += pts;
     }
-    
-    int getPoints(){
-        return points;
+    void increaseNugget(int amt){
+        nugget += amt;
+    }
+    void increaseSonar(int amt){
+        sonar += amt;
+    }
+    void increaseWater(int amt){
+        water += amt;
     }
 private:
     // You may add any public/private methods and private member

@@ -36,10 +36,19 @@ void FrackMan::doSomething(){
             case KEY_PRESS_LEFT:
             case KEY_PRESS_RIGHT:
             case KEY_PRESS_UP:
-            case KEY_PRESS_DOWN:
+            case KEY_PRESS_DOWN:{
                 Direction dir = keyToDir(keyPressed);
                 changeState(dir);
                 break;
+            }
+            case KEY_PRESS_TAB:{
+                if(nugget <= 0)
+                    break;
+                Nugget* nugget = new Nugget(getWorld(), this, getX(), getY(), true, false, SOUND_PROTESTER_FOUND_GOLD, 100);
+                getWorld()->addActor(nugget);
+                nugget--;
+                break;
+            }
         }
     }
 };

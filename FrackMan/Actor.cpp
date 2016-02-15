@@ -34,4 +34,19 @@ void Human::changeState(Direction dir){
     }
 }
 
-
+bool Item::checkDiscovered(const Actor* detector){
+    int dist = getWorld()->dist(getX(), getY(), detector->getX(), detector->getY());
+    if(!isDiscovered()){
+        if(dist <= 4){
+            setDiscovered();
+            return false;
+        }
+    }
+    if(dist <= 3){
+        consume();
+        getWorld()->playSound(getSound());
+        getPlayer()->increasePoints(getPoints());
+        return true;
+    }
+    return false;
+}

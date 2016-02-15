@@ -101,6 +101,9 @@ public:
     }
     virtual ~Item(){};
     virtual void doSomething() = 0;
+    virtual int getPoints() = 0;
+    virtual int getSound() = 0;
+
     void setDiscovered(){
         setVisible(true);
         discovered = true;
@@ -108,12 +111,16 @@ public:
     bool isDiscovered(){
         return discovered;
     }
+    /*returns true if an object is acquired*/
+    bool checkDiscovered(const Actor* detector);
+
     FrackMan* getPlayer(){
         return player;
     }
     StudentWorld* getWorld(){
         return world;
     }
+    
     virtual void consume(){
         dead = true;
     }
