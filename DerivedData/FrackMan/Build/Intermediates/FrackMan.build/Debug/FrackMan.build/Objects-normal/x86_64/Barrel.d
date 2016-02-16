@@ -13,4 +13,5 @@ dependencies: \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut_std.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut_ext.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Nugget.h \
-  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Protester.h
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Protester.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Sonar.h

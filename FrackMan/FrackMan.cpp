@@ -44,10 +44,18 @@ void FrackMan::doSomething(){
             case KEY_PRESS_TAB:{
                 if(nugget <= 0)
                     break;
+                
                 Nugget* nugget = new Nugget(getWorld(), this, getX(), getY(), true, false, SOUND_PROTESTER_FOUND_GOLD, 100);
                 getWorld()->addActor(nugget);
                 nugget--;
                 break;
+            }
+            case 'Z':
+            case 'z':{
+                if(sonar <= 0)
+                    break;
+                getWorld()->revealSonar(getX(), getY());
+                sonar--;
             }
         }
     }

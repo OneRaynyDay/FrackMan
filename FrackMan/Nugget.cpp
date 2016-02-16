@@ -10,7 +10,13 @@
 #include "Nugget.h"
 
 Nugget::~Nugget(){
-    getPlayer()->increaseNugget(1);
+    if(pickup){
+        getPlayer()->increaseNugget(1);
+        std::cout<<"hi"<<std::endl;
+    }
+    else{
+        /*DO SOMETHING HERE TO THE PROTESTERS*/
+    }
 }
 
 

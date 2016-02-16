@@ -102,7 +102,7 @@ public:
     virtual ~Item(){};
     virtual void doSomething() = 0;
     virtual int getPoints() = 0;
-    virtual int getSound() = 0;
+    virtual int getSound(){ return SOUND_GOT_GOODIE; }
 
     void setDiscovered(){
         setVisible(true);

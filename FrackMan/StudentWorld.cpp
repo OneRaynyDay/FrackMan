@@ -11,9 +11,13 @@ GameWorld* createStudentWorld(string assetDir)
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
 StudentWorld::~StudentWorld()
 {
-    for(int i = dirt.size()-1; i>=0; i--){
-        delete dirt[i];
-        dirt.pop_back();
+    for(int i = 0; i < WORLD_X; i++){
+        for(int j = 0; j < DIRT_ROWS; j++){
+            if(dirt[i][j] == nullptr)
+                continue;
+            delete dirt[i][j];
+            dirt[i][j] = nullptr;
+        }
     }
     for(int i = actor.size()-1; i>=0; i--){
         delete actor[i];
@@ -42,13 +46,11 @@ void StudentWorld::generateCoord(int &xf, int &yf){
 
 int StudentWorld::init(){
     player = new FrackMan(this);
-    for(int j = 0; j < VIEW_HEIGHT; j++){
-        for(int i = 0; i < DIRT_ROWS; i++){
-            if(j >= 30 && j <= 33)
+    for(int i = 0; i < WORLD_X; i++){
+        for(int j = 0; j < DIRT_ROWS; j++){
+            if(i >= 30 && i <= 33)
                 continue;
-            // passing in j as x and i as y
-            Dirt* currDirt = new Dirt(j, i);
-            dirt.push_back(currDirt);
+            dirt[i][j] = new Dirt(i, j);
         }
     }
     
@@ -96,6 +98,18 @@ int StudentWorld::move(){
     player->doSomething();
     //        decLives();
     
+    /* adding things */
+    int G = curLevel * 25 + 300;
+    //1 in G chance a water or sonar will show up:
+    int itemAppearanceProb = (int)((double) rand() / (RAND_MAX) * G);
+    //std::cout<<itemAppearanceProb<<std::endl;
+    if(itemAppearanceProb == 1){
+        //1/5th of the time, a sonar should show up
+        //if((int)((double) rand() / (RAND_MAX) * 5) == 1){
+            Sonar* sonar = new Sonar(this, player);
+            actor.push_back(sonar);
+        //}
+    }
     /* removes things */
     for (vector<Actor*>::iterator it = actor.begin() ; it != actor.end();){
         if((*it)->isDead()){
@@ -120,9 +134,10 @@ void StudentWorld::cleanUp(){
      destructor and the cleanUp() method even though they likely do
      the same thing.
      */
-    for(int i = dirt.size()-1; i>=0; i--){
-        delete dirt[i];
-        dirt.pop_back();
+    for(int i = DIRT_ROWS-1; i>=0; i--){
+        for(int j = WORLD_X-1; j>=0; j--){
+            dirt[i][j] = nullptr;
+        }
     }
     for(int i = actor.size()-1; i>=0; i--){
         delete actor[i];
@@ -133,20 +148,31 @@ void StudentWorld::cleanUp(){
 
 void StudentWorld::removeDirt(int x, int y, int size){
     bool flag = false;
-    for (vector<Dirt*>::iterator it = dirt.begin() ; it != dirt.end();){
-        if(inRange((*it)->getX(), (*it)->getY(), x, y, size, size)){
-            //remove dirt
-            delete *it;
-            it = dirt.erase(it);
-            flag = true;
-        }
-        else{
-            it++;
+    for(int i = 0; i < WORLD_X; i++){
+        for(int j = 0; j < DIRT_ROWS; j++){
+            if(dirt[i][j] == nullptr) continue;
+            if(inRange(dirt[i][j]->getX(), dirt[i][j]->getY(), x, y, size, size)){
+                delete dirt[i][j];
+                dirt[i][j] = nullptr;
+                flag = true;
+            }
         }
     }
     //play sound
     if(flag)
         playSound(SOUND_DIG);
+}
+
+void StudentWorld::revealSonar(int x, int y){
+    for(vector<Actor*>::iterator it = actor.begin() ; it != actor.end();it++){
+        Actor* a = *it;
+        if(dist(a->getX(), a->getY(), x, y) < SONAR_RANGE){
+            if(Item* i = dynamic_cast<Item*>(a)) {
+                i->setDiscovered();
+            }
+        }
+    }
+    playSound(SOUND_SONAR);
 }
 
 vector<Protester*> StudentWorld::getProtesters(){

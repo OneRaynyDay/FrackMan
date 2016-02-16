@@ -9,6 +9,7 @@
 #include "FrackMan.h"
 #include "Barrel.h"
 #include "Nugget.h"
+#include "Sonar.h"
 #include "Protester.h"
 #include <vector>
 #include <string>
@@ -28,6 +29,7 @@ class StudentWorld : public GameWorld
     static const int WORLD_X = 64;
     static const int WORLD_Y = 64;
     static const int CHARACTER_SPACING = 6;
+    static const int SONAR_RANGE = 12;
 public:
     // Implement a constructor for this class that initializes all member
     // variables required for proper gameplay.
@@ -38,6 +40,11 @@ public:
         y_size = WORLD_Y;
         curLevel = 0;
         curBarrels = 0;
+        for(int i = 0; i < WORLD_X; i++){
+            for(int j = 0; j < DIRT_ROWS; j++){
+                dirt[i][j] = nullptr;
+            }
+        }
         /* MORE TO WRITE HERE ... */
 	}
     // Implement a destructor for this class that frees any remaining
@@ -64,6 +71,7 @@ public:
     virtual void cleanUp();
 
     void removeDirt(int x, int y, int size);
+    void revealSonar(int x, int y);
     
     //this is necessary for nuggets
     vector<Protester*> getProtesters();
@@ -95,12 +103,14 @@ public:
     void decreaseBarrels(){
         curBarrels--;
     }
+    /*Getters*/
+    int getLevel(){return curLevel;}
 private:
     /* Add any private member variables to this class required to keep
     track of all Dirt in the oil field as well as the FrackMan object.
     You may ignore all other items in the oil field such as Boulders,
     Barrels of oil, Protesters, Nuggets, etc. for part #1. */
-    vector<Dirt*> dirt;
+    Dirt* dirt[WORLD_X][DIRT_ROWS];
     FrackMan* player;
     vector<Actor*> actor;
     /* MORE TO WRITE HERE ... */
