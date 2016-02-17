@@ -42,7 +42,13 @@ Pool::Pool(StudentWorld* w, FrackMan* f, int startX, int startY) : Item(w, f, II
  */
 
 void Pool::doSomething(){
-    
-    if(checkDiscovered(getPlayer()))
+    if(isDead())
         return;
+    hitpoints--;
+    if(hitpoints <= 0){
+        consume();
+    }
+    if(getWorld()->checkDiscoveredFrackMan(this)){
+        getPlayer()->increaseWater(5);
+    }
 }

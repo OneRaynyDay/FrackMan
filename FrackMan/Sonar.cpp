@@ -35,7 +35,7 @@ void Sonar::doSomething(){
     if(hitpoints <= 0){
         consume();
     }
-    if(checkDiscovered(getPlayer())){
+    if(getWorld()->checkDiscoveredFrackMan(this)){
         getPlayer()->increaseSonar(1);
     }
 }

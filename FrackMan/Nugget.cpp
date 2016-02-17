@@ -12,7 +12,6 @@
 Nugget::~Nugget(){
     if(pickup){
         getPlayer()->increaseNugget(1);
-        std::cout<<"hi"<<std::endl;
     }
     else{
         /*DO SOMETHING HERE TO THE PROTESTERS*/
@@ -22,16 +21,14 @@ Nugget::~Nugget(){
 
 void Nugget::doSomething(){
     if(pickup){
-        checkDiscovered(getPlayer());
+        getWorld()->checkDiscoveredFrackMan(this);
     }
     else{
-        hitpoints--;
         if(hitpoints == 0){
             consume();
+            return;
         }
-        vector<Protester*> protesters = getWorld()->getProtesters();
-        for(vector<Protester*>::iterator it = protesters.begin() ; it != protesters.end(); it++){
-            checkDiscovered((*it));
-        }
+        hitpoints--;
+        getWorld()->checkDiscoveredProtester(this);
     }
 }

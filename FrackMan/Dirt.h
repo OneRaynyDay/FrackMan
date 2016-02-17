@@ -26,9 +26,12 @@ public:
         setVisible(true);
     };
     virtual ~Dirt(){};
+    virtual bool isBlock(){ return true; }
     /* We don't need these. We have a separate vector of Dirt */
     virtual void consume(){};
-    virtual bool isDead(){return false;};
+    virtual int getSound(){ return SOUND_NONE; }
+    virtual int getPoints(){ return 0; }
+    virtual bool isDead() const {return false;};
     virtual void doSomething(){}; // doesn't need to do anything
 private:
     // You may add any set of public/private methods and private

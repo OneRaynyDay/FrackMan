@@ -10,6 +10,8 @@
 #include "Barrel.h"
 #include "Nugget.h"
 #include "Sonar.h"
+#include "Pool.h"
+#include "Squirt.h"
 #include "Protester.h"
 #include <vector>
 #include <string>
@@ -74,7 +76,6 @@ public:
     void revealSonar(int x, int y);
     
     //this is necessary for nuggets
-    vector<Protester*> getProtesters();
     void addActor(Actor* act);
     
     bool inRange(int tx, int ty, int x, int y, int xt, int yt){
@@ -83,17 +84,26 @@ public:
          x, y : start x start y
          xt, yt : x thresh y thresh
          */
-        return (tx >= x && tx <= x + xt) && (ty >= y && ty <= y + yt);
+        return (tx >= x && tx < x + xt) && (ty >= y && ty < y + yt);
     }
     bool inBound(int x, int y){
-        return (x >= 0 && x < x_size) && (y >= 0 && y < y_size);
+        return (x >= 0 && x <= x_size) && (y >= 0 && y <= y_size);
     }
-    void squirt(int x, int y, Actor::Direction dir){};
+    void squirt(int x, int y, Actor::Direction dir);
     /*
      No distributed game object may be within a radius (Euclidian distance) of 6 squares of any other distributed game object
      */
+    int getRandomNum(int range);
     bool sparseEnough(int x, int y);
+    bool blank(int x, int y, int tx, int ty);
     void generateCoord(int& x, int& y);
+    void populateWater(int &xf, int&yf);
+    void attackProtestersAt(int x, int y, int size, int hitDecrease);
+    
+    bool checkDiscoveredFrackMan(Actor* detector);
+    bool checkDiscoveredProtester(Actor* detector);
+    bool existsBlock(int x, int y, int size);
+    
     int dist(int x1, int y1, int x2, int y2){
         int d = (int)(pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5));
         //std::cout<< "x1 : " << x1 << " x2 : " << x2 << " y1 : " << y1 << " y2 : " << y2 << "d : " << d << std::endl;

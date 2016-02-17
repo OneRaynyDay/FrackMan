@@ -25,13 +25,21 @@ public:
         setVisible(false);
     };
     virtual void consume() = 0;
-    virtual bool isDead() = 0;
+    virtual bool isDead() const = 0;
+
     // It must have a single virtual method called doSomething() that can
     // be called by the World to get one of the game’s actors to do
     // something.
     // This is pure virtual function
     virtual void doSomething() = 0;
-    
+    virtual int getSound() = 0;
+    virtual int getPoints() = 0;
+    virtual bool isBlock(){ return false; }
+    virtual void setDiscovered(){ /* do nothing */ }
+    virtual bool isDiscovered() const{ return true; }
+    virtual bool isHuman() const{ return false; }
+    virtual bool moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir);
+
 private:
     // You may add other public/private methods and private member
     // variables to this base class, as you see fit.
@@ -59,18 +67,21 @@ public:
     }
     virtual ~Human(){};
     virtual void doSomething() = 0;
-    virtual bool moveDelta(Direction dir, int& xdir, int& ydir);
+    virtual int getSound(){ return SOUND_NONE; }
+    virtual int getPoints(){ return 0; }
     virtual void changeState(Direction dir);
+
     StudentWorld* getWorld(){
         return world;
     }
     virtual void consume(){
         if(hitpoints > 0)
-            hitpoints--;
+            hitpoints --;
     }
-    virtual bool isDead(){
+    virtual bool isDead() const{
         return hitpoints <= 0;
     }
+    virtual bool isHuman() const { return true; }
 private:
     int hitpoints;
     StudentWorld* world;
@@ -104,16 +115,14 @@ public:
     virtual int getPoints() = 0;
     virtual int getSound(){ return SOUND_GOT_GOODIE; }
 
-    void setDiscovered(){
+    virtual void setDiscovered(){
         setVisible(true);
         discovered = true;
     }
-    bool isDiscovered(){
+    virtual bool isDiscovered() const{
         return discovered;
     }
     /*returns true if an object is acquired*/
-    bool checkDiscovered(const Actor* detector);
-
     FrackMan* getPlayer(){
         return player;
     }
@@ -124,7 +133,7 @@ public:
     virtual void consume(){
         dead = true;
     }
-    virtual bool isDead(){
+    virtual bool isDead() const{
         return dead;
     }
 private:

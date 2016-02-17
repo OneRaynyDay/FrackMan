@@ -23,7 +23,7 @@
  picked up. Once all Barrels on the level have been picked up, the player finishes the level and may advance to the next level. */
 
 void Barrel::doSomething(){
-    if(checkDiscovered(getPlayer())){
+    if(getWorld()->checkDiscoveredFrackMan(this)){
         getWorld()->decreaseBarrels();
     }
 }

@@ -16,6 +16,7 @@
 class Pool : public Item{
 static const int SCORE_INCREASE = 100;
 public:
+    static const int DEFAULT_SIZE = 1;
     Pool(StudentWorld* w, FrackMan* f, int startX, int startY);
     virtual ~Pool(){};
     virtual void doSomething();

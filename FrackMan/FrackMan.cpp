@@ -30,9 +30,10 @@ void FrackMan::doSomething(){
                 while(!isDead())
                     consume();
                 break;
-            case KEY_PRESS_SPACE:
+            case KEY_PRESS_SPACE:{
                 getWorld()->squirt(getX(), getY(), getDirection());
                 break;
+            }
             case KEY_PRESS_LEFT:
             case KEY_PRESS_RIGHT:
             case KEY_PRESS_UP:

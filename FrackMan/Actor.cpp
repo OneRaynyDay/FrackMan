@@ -2,22 +2,27 @@
 #include "StudentWorld.h"
 
 // Students:  Add code to this file (if you wish), Actor.h, StudentWorld.h, and StudentWorld.cpp
-bool Human::moveDelta(Direction dir, int& xdir, int& ydir){
+bool Actor::moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir){
+    int tempx = xdir, tempy = ydir;
     switch(dir){
         case left:
-            xdir--;
+            tempx--;
             break;
         case right:
-            xdir++;
+            tempx++;
             break;
         case up:
-            ydir++;
+            tempy++;
             break;
         case down:
-            ydir--;
+            tempy--;
             break;
         default:
             return false;
+    }
+    if(world->inBound(tempx, tempy) && world->inBound(tempx+(getSize()*4), tempy+(getSize()*4))){
+        xdir = tempx;
+        ydir = tempy;
     }
     return true;
 }
@@ -29,24 +34,8 @@ void Human::changeState(Direction dir){
         return;
     }
     int xdelta = getX(), ydelta = getY();
-    if(moveDelta(dir, xdelta, ydelta) && world->inBound(xdelta, ydelta)){
+    if(moveDelta(getWorld(), dir, xdelta, ydelta)){
         moveTo(xdelta, ydelta);
     }
 }
 
-bool Item::checkDiscovered(const Actor* detector){
-    int dist = getWorld()->dist(getX(), getY(), detector->getX(), detector->getY());
-    if(!isDiscovered()){
-        if(dist <= 4){
-            setDiscovered();
-            return false;
-        }
-    }
-    if(dist <= 3){
-        consume();
-        getWorld()->playSound(getSound());
-        getPlayer()->increasePoints(getPoints());
-        return true;
-    }
-    return false;
-}

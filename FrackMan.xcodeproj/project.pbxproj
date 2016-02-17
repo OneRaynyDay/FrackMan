@@ -19,6 +19,7 @@
 		544B8BE01C71F44A0029622F /* Nugget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BDF1C71F44A0029622F /* Nugget.cpp */; settings = {ASSET_TAGS = (); }; };
 		544B8BE41C728C4B0029622F /* Sonar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BE31C728C4B0029622F /* Sonar.cpp */; settings = {ASSET_TAGS = (); }; };
 		544B8BE71C72A2160029622F /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BE61C72A2160029622F /* Pool.cpp */; settings = {ASSET_TAGS = (); }; };
+		54FFAA691C7411BE00B840E7 /* Squirt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54FFAA681C7411BE00B840E7 /* Squirt.cpp */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -65,6 +66,8 @@
 		544B8BE31C728C4B0029622F /* Sonar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sonar.cpp; sourceTree = "<group>"; };
 		544B8BE51C72A1220029622F /* Pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pool.h; sourceTree = "<group>"; };
 		544B8BE61C72A2160029622F /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pool.cpp; sourceTree = "<group>"; };
+		54FFAA671C7411B000B840E7 /* Squirt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Squirt.h; sourceTree = "<group>"; };
+		54FFAA681C7411BE00B840E7 /* Squirt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Squirt.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -126,6 +129,8 @@
 				544B8BE21C728C3A0029622F /* Sonar.h */,
 				544B8BE31C728C4B0029622F /* Sonar.cpp */,
 				544B8BE51C72A1220029622F /* Pool.h */,
+				54FFAA671C7411B000B840E7 /* Squirt.h */,
+				54FFAA681C7411BE00B840E7 /* Squirt.cpp */,
 				544B8BE61C72A2160029622F /* Pool.cpp */,
 				544B8BE11C71FAB90029622F /* Protester.h */,
 			);
@@ -195,6 +200,7 @@
 				4B5BB27B1A911293009A9A96 /* GameWorld.cpp in Sources */,
 				4B5BB27C1A911293009A9A96 /* StudentWorld.cpp in Sources */,
 				544B8BDC1C71CC8E0029622F /* Barrel.cpp in Sources */,
+				54FFAA691C7411BE00B840E7 /* Squirt.cpp in Sources */,
 				4B5BB2651A9110AA009A9A96 /* main.cpp in Sources */,
 				4B5BB27A1A911293009A9A96 /* GameController.cpp in Sources */,
 				544B8BD01C7159FF0029622F /* FrackMan.cpp in Sources */,
