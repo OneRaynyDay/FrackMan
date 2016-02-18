@@ -16,6 +16,8 @@
 #include "Protester.h"
 #include <vector>
 #include <string>
+#include <sstream>
+#include <iomanip>
 #include <cmath>
 #include <random>
 
@@ -33,6 +35,7 @@ class StudentWorld : public GameWorld
     static const int WORLD_Y = 64;
     static const int CHARACTER_SPACING = 6;
     static const int SONAR_RANGE = 12;
+    static const int MIN_Y_SPAWN = 20;
 public:
     // Implement a constructor for this class that initializes all member
     // variables required for proper gameplay.
@@ -72,7 +75,8 @@ public:
     virtual int move();
 	
     virtual void cleanUp();
-
+    
+    void updateText();
     void removeDirt(int x, int y, int size);
     void revealSonar(int x, int y);
     

@@ -62,7 +62,7 @@ void StudentWorld::generateCoord(int &xf, int &yf, int xsize, int ysize){
     int x = -1, y = -1;
     do{
         x = getRandomNum(WORLD_X-xsize);
-        y = getRandomNum(DIRT_ROWS-ysize);
+        y = getRandomNum(DIRT_ROWS-ysize-MIN_Y_SPAWN)+MIN_Y_SPAWN;
     }while(!sparseEnough(x, y) || inTunnel(x, y, xsize, ysize));
     xf = x;
     yf = y;
@@ -89,7 +89,6 @@ int StudentWorld::init(){
     }
     
     // Take care of level stats
-    curLevel++;
     // boulders
     int B = min(curLevel / 2 + 2, 6);
     // gold nuggets
@@ -97,7 +96,6 @@ int StudentWorld::init(){
     // barrels
     int L = min(2 + curLevel, 20);
     curBarrels = L;
-    std::cout<<"Current barrel num : " << curBarrels<<endl;
     /*load the barrels*/
     
     for(int i = 0; i < B; i++){
@@ -111,7 +109,6 @@ int StudentWorld::init(){
                 }
             }
         }
-        cout<<x<<y<<endl;
         Boulder* boulder = new Boulder(this, player, x, y);
         //remove all the dirt around it!
         actor.push_back(boulder);
@@ -152,6 +149,22 @@ int StudentWorld::init(){
     return GWSTATUS_CONTINUE_GAME;
 }
 
+string formatDisplay(string front, int end, int width = 2, char fill = ' '){
+    stringstream ss;
+    ss << front << setw(width) << setfill(fill) << end;
+    return ss.str();
+}
+
+void StudentWorld::updateText(){
+    int water = player->getWater();
+    int sonar = player->getSonar();
+    int nugget = player->getNugget();
+    int hitpoints = player->getHitpoints();
+    // format -> Scr: 0321000 Lvl: 52 Lives: 3 Hlth: 80% Water: 20 Gld: 3 Sonar: 1 Oil Left: 2
+    string text = formatDisplay("Scr: ", getScore(), 8, '0') + formatDisplay(" Lvl: ", getLevel(), 2) + formatDisplay(" Lives: ", getLives(), 1) + formatDisplay(" Hlth: ", hitpoints, 3) + formatDisplay("% Water: ", water) + formatDisplay(" Gld: ", nugget) + formatDisplay(" Sonar: ", sonar) + formatDisplay(" Oil left: ", curBarrels);
+    setGameStatText(text);
+}
+
 int StudentWorld::move(){
     /* it must ask your FrackMan object to do something. Your
      move() method need not check to see if the FrackMan has died or
@@ -160,10 +173,16 @@ int StudentWorld::move(){
      actors (e.g., Nuggets or Boulders) at this point – just the
      FrackMan.
      */
-    if(curBarrels == 0)
+    updateText();
+    
+    if(curBarrels == 0){
+        curLevel++;
+        playSound(SOUND_FINISHED_LEVEL);
         return GWSTATUS_FINISHED_LEVEL;
+    }
     if(player->isDead()){
-        curLevel--;
+        playSound(SOUND_PLAYER_GIVE_UP);
+        decLives();
         return GWSTATUS_PLAYER_DIED;
     }
     player->doSomething();
@@ -176,7 +195,7 @@ int StudentWorld::move(){
     //std::cout<<itemAppearanceProb<<std::endl;
     if(itemAppearanceProb == 1){
         //1/5th of the time, a sonar should show up
-        if((int)((double) rand() / (RAND_MAX) * 5) == 1){
+        if(getRandomNum(5) == 1){
             Sonar* sonar = new Sonar(this, player);
             actor.push_back(sonar);
         }
@@ -304,7 +323,7 @@ bool StudentWorld::checkDiscoveredFrackMan(Actor* detector){
     if(d <= 3){
         detector->consume();
         playSound(detector->getSound());
-        player->increasePoints(detector->getPoints());
+        increaseScore(detector->getPoints());
         return true;
     }
     return false;
@@ -348,6 +367,7 @@ bool StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector<A
 }
 void StudentWorld::squirt(int x, int y, Actor::Direction dir){
     Squirt* sq = new Squirt(this, player, dir, x, y);
+    playSound(SOUND_PLAYER_SQUIRT);
     actor.push_back(sq);
 }
 

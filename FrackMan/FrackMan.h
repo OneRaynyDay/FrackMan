@@ -29,7 +29,7 @@ static const int START_Y = 60;
 static const int START_X = 30;
 static const int GOLD_TICKS = 100;
 static const int INIT_HITPOINT = 10;
-static const int INIT_WATER = 30;
+static const int INIT_WATER = 5;
 static const int INIT_SONAR = 1;
 static const int INIT_NUGGET = 0;
 
@@ -50,7 +50,6 @@ public:
         water = INIT_WATER;
         sonar = INIT_SONAR;
         nugget = INIT_NUGGET;
-        points = 0;
     };
     virtual ~FrackMan(){};
     
@@ -83,14 +82,17 @@ public:
         }
         return none;
     }
-    
-    int getPoints(){
-        return points;
+    /* getters */
+    int getWater(){
+        return water;
     }
-    
-    void increasePoints(int pts){
-        points += pts;
+    int getSonar(){
+        return sonar;
     }
+    int getNugget(){
+        return nugget;
+    }
+    /* setters */
     void increaseNugget(int amt){
         nugget += amt;
     }
@@ -109,7 +111,6 @@ private:
     int water;
     int sonar;
     int nugget;
-    int points;
 };
 
 

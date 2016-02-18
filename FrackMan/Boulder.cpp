@@ -31,6 +31,7 @@ void Boulder::doSomething(){
         hitpoint--;
         if(hitpoint == 0){
             state = FALLING_STATE;
+            getWorld()->playSound(getSound());
         }
     }
     else if(state == FALLING_STATE){

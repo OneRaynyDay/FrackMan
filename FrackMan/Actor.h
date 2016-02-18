@@ -21,9 +21,7 @@ public:
     Actor(int imageID, int startX, int startY, Direction dir = right, double size = 1.0, unsigned int depth = 0):GraphObject(imageID, startX, startY, dir, size, depth){
         // It (or its base class) must make itself visible via a call to setVisible(true);
     }
-    virtual ~Actor(){
-        setVisible(false);
-    };
+    virtual ~Actor(){};
     virtual void consume() = 0;
     virtual bool isDead() const = 0;
 
@@ -69,6 +67,7 @@ public:
     virtual void doSomething() = 0;
     virtual int getSound(){ return SOUND_NONE; }
     virtual int getPoints(){ return 0; }
+    int getHitpoints(){ return hitpoints; }
     virtual void changeState(Direction dir);
     
     StudentWorld* getWorld(){

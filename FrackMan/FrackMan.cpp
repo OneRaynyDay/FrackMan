@@ -47,11 +47,11 @@ void FrackMan::doSomething(){
                     break;
                 
                 int x = getX(), y = getY();
+                water--;
                 moveDelta(getWorld(), getDirection(), x, y, 4);
                 if(x == getX() && y == getY())
                     break;
                 getWorld()->squirt(x, y, getDirection());
-                water--;
                 break;
             }
             case KEY_PRESS_LEFT:
@@ -75,6 +75,7 @@ void FrackMan::doSomething(){
             case 'z':{
                 if(sonar <= 0)
                     break;
+                
                 getWorld()->revealSonar(getX(), getY());
                 sonar--;
             }
