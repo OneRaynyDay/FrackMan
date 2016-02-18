@@ -38,7 +38,7 @@ public:
     virtual void setDiscovered(){ /* do nothing */ }
     virtual bool isDiscovered() const{ return true; }
     virtual bool isHuman() const{ return false; }
-    virtual bool moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir);
+    virtual bool moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir, int steps = 1);
 
 private:
     // You may add other public/private methods and private member
@@ -70,7 +70,7 @@ public:
     virtual int getSound(){ return SOUND_NONE; }
     virtual int getPoints(){ return 0; }
     virtual void changeState(Direction dir);
-
+    
     StudentWorld* getWorld(){
         return world;
     }

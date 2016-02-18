@@ -25,7 +25,7 @@ class Squirt : public Item{
      b. They have a size of 1.0
      */
     static const int SQUIRT_DAMAGE = 2;
-    static const int SQUIRT_HEALTH = 5;
+    static const int SQUIRT_HEALTH = 4;
 public:
     Squirt(StudentWorld* w, FrackMan* f, Direction dir, int startX, int startY) : Item(w, f, IID_WATER_SPURT, startX, startY, dir, 1.0, 1){
         setVisible(true);

@@ -34,6 +34,16 @@ bool StudentWorld::sparseEnough(int x, int y){
     return true;
 }
 
+bool StudentWorld::inTunnel(int x, int y, int xsize, int ysize){
+    for(int i = x; i < x+xsize; i++){
+        for(int j = y; j < y+ysize; j++){
+            if((i >= 30 && i <= 33) && (j >= 4))
+                return true;
+        }
+    }
+    return false;
+}
+
 bool StudentWorld::blank(int x, int y, int threshx, int threshy){
     for(int i = 0; i < threshx; i++){
         for(int j = 0; j < threshy; j++){
@@ -45,15 +55,15 @@ bool StudentWorld::blank(int x, int y, int threshx, int threshy){
 }
 
 int StudentWorld::getRandomNum(int range){
-    return (int)((double) rand() / (RAND_MAX) * range);
+    return (int)(rand() % range);
 }
 
-void StudentWorld::generateCoord(int &xf, int &yf){
+void StudentWorld::generateCoord(int &xf, int &yf, int xsize, int ysize){
     int x = -1, y = -1;
     do{
-        x = getRandomNum(WORLD_X);
-        y = getRandomNum(DIRT_ROWS);
-    }while(!sparseEnough(x, y));
+        x = getRandomNum(WORLD_X-xsize);
+        y = getRandomNum(DIRT_ROWS-ysize);
+    }while(!sparseEnough(x, y) || inTunnel(x, y, xsize, ysize));
     xf = x;
     yf = y;
 }
@@ -61,8 +71,8 @@ void StudentWorld::generateCoord(int &xf, int &yf){
 void StudentWorld::populateWater(int &xf, int&yf){
     int x = -1, y = -1;
     do{
-        x = getRandomNum(WORLD_X);
-        y = getRandomNum(DIRT_ROWS);
+        x = getRandomNum(WORLD_X-4);
+        y = getRandomNum(DIRT_ROWS-4);
     }while(!blank(x, y, Pool::DEFAULT_SIZE*4, Pool::DEFAULT_SIZE*4));
     xf = x;
     yf = y;
@@ -72,7 +82,7 @@ int StudentWorld::init(){
     player = new FrackMan(this);
     for(int i = 0; i < WORLD_X; i++){
         for(int j = 0; j < DIRT_ROWS; j++){
-            if((i >= 30 && i <= 33) && (j >= 4))
+            if(inTunnel(i,j))
                 continue;
             dirt[i][j] = new Dirt(i, j);
         }
@@ -90,16 +100,51 @@ int StudentWorld::init(){
     std::cout<<"Current barrel num : " << curBarrels<<endl;
     /*load the barrels*/
     
-    
+    for(int i = 0; i < B; i++){
+        int x = -1, y = -1; // This will get through the do while at least once.
+        generateCoord(x, y, 4, 4);
+        for(int i = x; i < x+4; i++){
+            for(int j = y; j < y+4; j++){
+                if(dirt[i][j] != nullptr){
+                    delete dirt[i][j];
+                    dirt[i][j] = nullptr;
+                }
+            }
+        }
+        cout<<x<<y<<endl;
+        Boulder* boulder = new Boulder(this, player, x, y);
+        //remove all the dirt around it!
+        actor.push_back(boulder);
+
+    }
+    /*
+    for(int i = 0; i < 1; i++){
+        int x = 58, y = 48; // This will get through the do while at least once.
+        //generateCoord(x, y, 4, 4);
+        for(int i = x; i < x+4; i++){
+            for(int j = y; j < y+4; j++){
+                if(dirt[i][j] != nullptr){
+                    delete dirt[i][j];
+                    dirt[i][j] = nullptr;
+                }
+            }
+        }
+        cout<<x<<y<<endl;
+        Boulder* boulder = new Boulder(this, player, x, y);
+        //remove all the dirt around it!
+        actor.push_back(boulder);
+        
+    }
+    */
     for(int i = 0; i < G; i++){
         int x = -1, y = -1; // This will get through the do while at least once.
-        generateCoord(x, y);
+        generateCoord(x, y, 4, 4);
         Nugget* nugget = new Nugget(this, player, x, y);
         actor.push_back(nugget);
     }
     for(int i = 0; i < L; i++){
         int x = -1, y = -1; // This will get through the do while at least once.
-        generateCoord(x, y);
+        generateCoord(x, y, 4, 4);
         Barrel* barrel = new Barrel(this, player, x, y);
         actor.push_back(barrel);
     }
@@ -117,8 +162,10 @@ int StudentWorld::move(){
      */
     if(curBarrels == 0)
         return GWSTATUS_FINISHED_LEVEL;
-    if(player->isDead())
+    if(player->isDead()){
+        curLevel--;
         return GWSTATUS_PLAYER_DIED;
+    }
     player->doSomething();
     //        decLives();
     
@@ -164,8 +211,10 @@ void StudentWorld::cleanUp(){
      destructor and the cleanUp() method even though they likely do
      the same thing.
      */
-    for(int i = DIRT_ROWS-1; i>=0; i--){
-        for(int j = WORLD_X-1; j>=0; j--){
+    for(int i = 0; i < WORLD_X; i++){
+        for(int j = 0; j < DIRT_ROWS; j++){
+            if(dirt[i][j] == nullptr)
+                continue;
             delete dirt[i][j];
             dirt[i][j] = nullptr;
         }
@@ -194,27 +243,41 @@ void StudentWorld::removeDirt(int x, int y, int size){
         playSound(SOUND_DIG);
 }
 
-bool StudentWorld::existsBlock(int x, int y, int size){
-    //first loop through dirt blocks:
-    for(int i = x; i < x+size; i++){
-        for(int j = y; j < y+size; j++){
-            if(dirt[i][j] != nullptr && dirt[i][j]->isBlock())
-                return true;
-        }
-    }
-    //then loop through actors for boulder
+bool StudentWorld::existsBoulder(int x, int y, bool include, Actor* except){
     for(vector<Actor*>::iterator it = actor.begin() ; it != actor.end();it++){
-        if((*it)->isBlock() && inRange((*it)->getX(), (*it)->getY(), x, y, size, size)){
+        if(!include && (*it) == except)
+            continue;
+        if((*it)->isBlock() && dist(x, y, (*it)->getX(), (*it)->getY()) <= 3){
             return true;
         }
     }
     return false;
 }
 
+bool StudentWorld::existsBlock(int x, int y, int xsize, int ysize, bool& dirtOrActor, bool include, Actor* except){
+    //first loop through dirt blocks:
+    for(int i = x; i < x+xsize && i < WORLD_X; i++){
+        for(int j = y; j < y+ysize && j < DIRT_ROWS; j++){
+            if(!include && dirt[i][j] == except)
+                continue;
+            if(dirt[i][j] != nullptr && dirt[i][j]->isBlock()){
+                dirtOrActor = true;
+                return true;
+            }
+        }
+    }
+    if(existsBoulder(x, y, include, except)){
+        dirtOrActor = false;
+        return true;
+    }
+    //then loop through actors for boulders
+    return false;
+}
+
 void StudentWorld::revealSonar(int x, int y){
     for(vector<Actor*>::iterator it = actor.begin() ; it != actor.end();it++){
         Actor* a = *it;
-        if(dist(a->getX(), a->getY(), x, y) < SONAR_RANGE){
+        if(dist(a->getX(), a->getY(), x, y) <= SONAR_RANGE){
             a->setDiscovered();
         }
     }
@@ -261,15 +324,27 @@ bool StudentWorld::checkDiscoveredProtester(Actor* detector){
     }
     return flag;
 }
-void StudentWorld::attackProtestersAt(int x, int y, int size, int hitDecrease){
-    for(int i = 0; i < actor.size(); i++){
-        if(!actor[i]->isHuman()) continue;
-        if(inRange(actor[i]->getX(), actor[i]->getY(), x, y, size*4, size*4)){
-            for(int i = 0; i < hitDecrease; i++){
-                actor[i]->consume();
+bool StudentWorld::attackProtestersAt(int x, int y, int d, int hitDecrease){
+    return attackHumansAt(x, y, d, hitDecrease, actor);
+}
+bool StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease){
+    vector<Actor*> l;
+    l.push_back(player);
+    return attackHumansAt(x, y, d, hitDecrease, l);
+}
+
+bool StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector<Actor*> list){
+    bool hitSomeone = false;
+    for(int i = 0; i < list.size(); i++){
+        if(!list[i]->isHuman()) continue;
+        if(dist(list[i]->getX(), list[i]->getY(), x, y) <= d){
+            hitSomeone = true;
+            for(int j = 0; j < hitDecrease; j++){
+                list[i]->consume();
             }
         }
     }
+    return hitSomeone;
 }
 void StudentWorld::squirt(int x, int y, Actor::Direction dir){
     Squirt* sq = new Squirt(this, player, dir, x, y);

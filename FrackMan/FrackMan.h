@@ -29,7 +29,7 @@ static const int START_Y = 60;
 static const int START_X = 30;
 static const int GOLD_TICKS = 100;
 static const int INIT_HITPOINT = 10;
-static const int INIT_WATER = 5;
+static const int INIT_WATER = 30;
 static const int INIT_SONAR = 1;
 static const int INIT_NUGGET = 0;
 
@@ -100,6 +100,8 @@ public:
     void increaseWater(int amt){
         water += amt;
     }
+    virtual void changeState(Direction dir);
+
 private:
     // You may add any public/private methods and private member
     // variables to your player class as you see fit, so long as you use

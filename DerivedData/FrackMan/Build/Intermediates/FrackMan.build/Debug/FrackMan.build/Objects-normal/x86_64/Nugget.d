@@ -12,6 +12,7 @@ dependencies: \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut_std.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut_ext.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Boulder.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Barrel.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Sonar.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Pool.h \

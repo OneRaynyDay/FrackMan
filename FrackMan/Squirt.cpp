@@ -39,10 +39,15 @@ void Squirt::doSomething(){
 }
 
 void Squirt::changeState(int x, int y, int size){
-    if(getWorld()->existsBlock(x, y, size) && (getWorld()->inBound(x, y) && getWorld()->inBound(x+size, y+size))){
-        moveTo(x, y);
+    bool flag = false; // stub
+    if(getWorld()->existsBlock(x, y, size, size, flag)){
+        x = getX();
+        y = getY();
+    }
+    if(getX() == x && getY() == y){
+        consume();
     }
     else{
-        consume();
+        moveTo(x, y);
     }
 }

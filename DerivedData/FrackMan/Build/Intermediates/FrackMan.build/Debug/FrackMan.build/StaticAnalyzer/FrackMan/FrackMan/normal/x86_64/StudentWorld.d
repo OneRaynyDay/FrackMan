@@ -10,4 +10,10 @@ dependencies: \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut_std.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/freeglut_ext.h \
-  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/FrackMan.h
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/FrackMan.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Nugget.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Protester.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Barrel.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Sonar.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Pool.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Squirt.h

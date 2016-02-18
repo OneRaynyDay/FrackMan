@@ -6,6 +6,7 @@
 #include "GameWorld.h"
 #include "GameConstants.h"
 #include "Dirt.h"
+#include "Boulder.h"
 #include "FrackMan.h"
 #include "Barrel.h"
 #include "Nugget.h"
@@ -96,13 +97,17 @@ public:
     int getRandomNum(int range);
     bool sparseEnough(int x, int y);
     bool blank(int x, int y, int tx, int ty);
-    void generateCoord(int& x, int& y);
+    void generateCoord(int& x, int& y, int xsize = 1, int ysize = 1);
     void populateWater(int &xf, int&yf);
-    void attackProtestersAt(int x, int y, int size, int hitDecrease);
+    bool attackProtestersAt(int x, int y, int dist, int hitDecrease);
+    bool attackFrackManAt(int x, int y, int dist, int hitDecrease);
+    bool attackHumansAt(int x, int y, int dist, int hitDecrease, vector<Actor*> list);
+    bool inTunnel(int x, int y, int xsize = 1, int ysize = 1);
     
     bool checkDiscoveredFrackMan(Actor* detector);
     bool checkDiscoveredProtester(Actor* detector);
-    bool existsBlock(int x, int y, int size);
+    bool existsBlock(int x, int y, int xsize, int ysize, bool& dirtOrActor, bool include=true, Actor* except=nullptr);
+    bool existsBoulder(int x, int y, bool include=true, Actor* except=nullptr);
     
     int dist(int x1, int y1, int x2, int y2){
         int d = (int)(pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5));

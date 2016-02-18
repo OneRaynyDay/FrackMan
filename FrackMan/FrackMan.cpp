@@ -8,6 +8,18 @@
 
 #include <stdio.h>
 #include "FrackMan.h"
+void FrackMan::changeState(Direction dir){
+    if(dir != getDirection()){
+        setDirection(dir);
+        return;
+    }
+    int xdelta = getX(), ydelta = getY();
+    if(moveDelta(getWorld(), dir, xdelta, ydelta)){
+        if(!getWorld()->existsBoulder(xdelta, ydelta))
+            moveTo(xdelta, ydelta);
+    }
+
+}
 
 void FrackMan::doSomething(){
     //The FrackMan must check to see if it is currently alive. If not, then its doSomething() method must return immediately – none of the following steps should be performed.
@@ -31,7 +43,15 @@ void FrackMan::doSomething(){
                     consume();
                 break;
             case KEY_PRESS_SPACE:{
-                getWorld()->squirt(getX(), getY(), getDirection());
+                if(water <= 0)
+                    break;
+                
+                int x = getX(), y = getY();
+                moveDelta(getWorld(), getDirection(), x, y, 4);
+                if(x == getX() && y == getY())
+                    break;
+                getWorld()->squirt(x, y, getDirection());
+                water--;
                 break;
             }
             case KEY_PRESS_LEFT:

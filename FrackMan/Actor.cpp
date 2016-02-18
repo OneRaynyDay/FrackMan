@@ -2,20 +2,20 @@
 #include "StudentWorld.h"
 
 // Students:  Add code to this file (if you wish), Actor.h, StudentWorld.h, and StudentWorld.cpp
-bool Actor::moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir){
+bool Actor::moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir, int steps){
     int tempx = xdir, tempy = ydir;
     switch(dir){
         case left:
-            tempx--;
+            tempx-=steps;
             break;
         case right:
-            tempx++;
+            tempx+=steps;
             break;
         case up:
-            tempy++;
+            tempy+=steps;
             break;
         case down:
-            tempy--;
+            tempy-=steps;
             break;
         default:
             return false;
