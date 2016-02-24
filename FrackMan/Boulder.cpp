@@ -8,7 +8,8 @@
 
 #include <stdio.h>
 #include "Boulder.h"
-
+Boulder::~Boulder(){
+}
 void Boulder::doSomething(){
     /*Check to see if it’s still alive. If not, its doSomething() method should immediately return.
      2. If the Boulder is currently in the stable state, then it must check to see if there is any Dirt in the 4 squares immediately below it. For example, if the Boulder is at location x=20,y=30, it would check squares (20,29), (21,29), (22,29) and (23,29) for Dirt. If there is any Dirt below the Boulder, it does nothing – after all it’s a dumb rock. However, if none of the 4 squares beneath the Boulder have any Dirt, then the Boulder must transition into a waiting state:
@@ -52,5 +53,6 @@ void Boulder::doSomething(){
             getWorld()->attackFrackManAt(x, y, 3, DECREASE_HP);
             moveTo(x, y);
         }
+         //must constantly update position
     }
 }

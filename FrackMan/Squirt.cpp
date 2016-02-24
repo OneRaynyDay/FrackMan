@@ -10,9 +10,6 @@
 #include "Squirt.h"
 
 Squirt::~Squirt(){
-    if(hit){
-        getWorld()->attackProtestersAt(getX(), getY(), getSize(), SQUIRT_DAMAGE);
-    }
 }
 
 void Squirt::doSomething(){
@@ -26,6 +23,7 @@ void Squirt::doSomething(){
     if(getWorld()->checkDiscoveredProtester(this)){
         consume();
         hit = true;
+        getWorld()->attackProtestersAt(getX(), getY(), 4, 2);
     }
     if(hitpoints == 0){
         consume();

@@ -36,6 +36,9 @@ class StudentWorld : public GameWorld
     static const int CHARACTER_SPACING = 6;
     static const int SONAR_RANGE = 12;
     static const int MIN_Y_SPAWN = 20;
+    static const int DIR_X = 61;
+    static const int DIR_Y = 61;
+    static const int MAX_MANHATTAN = 150;
 public:
     // Implement a constructor for this class that initializes all member
     // variables required for proper gameplay.
@@ -46,9 +49,19 @@ public:
         y_size = WORLD_Y;
         curLevel = 0;
         curBarrels = 0;
+        numProtesters = 0;
+        maxProtesters = 0;
+        protesterAddTick = 0;
+        curTick = 0;
         for(int i = 0; i < WORLD_X; i++){
             for(int j = 0; j < DIRT_ROWS; j++){
                 dirt[i][j] = nullptr;
+            }
+        }
+        for(int i = 0; i < DIR_X; i++){
+            for(int j = 0; j < DIR_Y; j++){
+                dirMap[i][j] = Actor::none;
+                stepMap[i][j] = MAX_MANHATTAN;
             }
         }
         /* MORE TO WRITE HERE ... */
@@ -104,15 +117,26 @@ public:
     void generateCoord(int& x, int& y, int xsize = 1, int ysize = 1);
     void populateWater(int &xf, int&yf);
     bool attackProtestersAt(int x, int y, int dist, int hitDecrease);
-    bool attackFrackManAt(int x, int y, int dist, int hitDecrease);
+    bool attackFrackManAt(int x, int y, int dist, int hitDecrease, bool directionMatters = false, Actor* detector = nullptr);
     bool attackHumansAt(int x, int y, int dist, int hitDecrease, vector<Actor*> list);
     bool inTunnel(int x, int y, int xsize = 1, int ysize = 1);
+    /*
+     Protester navigation function
+     */
+    void findPath(int x, int y, Actor::Direction dir, int step, Actor * except=nullptr);
+    void pathFindToTopRight(Actor * except=nullptr);
+    Actor::Direction getTopRightDir(int x, int y){
+        return dirMap[x][y];
+    }
+    bool canSeeProtester(int x, int y);
+    bool straightPathWithFrackMan(int x, int y);
+    Actor::Direction dirTowardsFrackMan(int x, int y);
     
     bool checkDiscoveredFrackMan(Actor* detector);
     bool checkDiscoveredProtester(Actor* detector);
     bool existsBlock(int x, int y, int xsize, int ysize, bool& dirtOrActor, bool include=true, Actor* except=nullptr);
     bool existsBoulder(int x, int y, bool include=true, Actor* except=nullptr);
-    
+    bool existsDirt(int x, int y, int xsize, int ysize, bool include=true, Actor* except=nullptr);
     int dist(int x1, int y1, int x2, int y2){
         int d = (int)(pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5));
         //std::cout<< "x1 : " << x1 << " x2 : " << x2 << " y1 : " << y1 << " y2 : " << y2 << "d : " << d << std::endl;
@@ -129,6 +153,33 @@ private:
     track of all Dirt in the oil field as well as the FrackMan object.
     You may ignore all other items in the oil field such as Boulders,
     Barrels of oil, Protesters, Nuggets, etc. for part #1. */
+    struct dirCoord{
+        dirCoord(){
+            x = 0;
+            y = 0;
+            dir = Actor::none;
+            dist = 150; //greater than the entire manhattan distance of the map.
+        }
+        dirCoord(int xe, int ye){
+            x = xe;
+            y = ye;
+            dir = Actor::none;
+            dist = 150; //greater than the entire manhattan distance of map
+        }
+        dirCoord(int xe, int ye, Actor::Direction dire){
+            x = xe;
+            y = ye;
+            dir = dire;
+            dist = 150;
+        }
+        int x;
+        int y;
+        int dist;
+        Actor::Direction dir;
+    };
+    Actor::Direction dirMap[DIR_X][DIR_Y];
+    int stepMap[DIR_X][DIR_Y];
+
     Dirt* dirt[WORLD_X][DIRT_ROWS];
     FrackMan* player;
     vector<Actor*> actor;
@@ -136,6 +187,7 @@ private:
     int x_size, y_size;
     int curLevel;
     int curBarrels;
+    int numProtesters, maxProtesters, protesterAddTick, curTick;
 };
 
 #endif // STUDENTWORLD_H_

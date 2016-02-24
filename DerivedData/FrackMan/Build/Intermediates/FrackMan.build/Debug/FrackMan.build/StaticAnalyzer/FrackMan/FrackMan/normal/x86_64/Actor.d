@@ -10,6 +10,7 @@ dependencies: \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/StudentWorld.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/GameWorld.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Dirt.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Boulder.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/FrackMan.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Nugget.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Protester.h \

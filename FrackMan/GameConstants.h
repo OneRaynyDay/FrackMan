@@ -16,7 +16,7 @@ const int IID_WATER_POOL	   = 9;
 
 // sounds
 
-const int SOUND_THEME					= 0;
+const int SOUND_THEME					= -1;
 const int SOUND_PROTESTER_GIVE_UP		= 1;
 const int SOUND_PLAYER_GIVE_UP			= 2;
 const int SOUND_PROTESTER_YELL			= 3;

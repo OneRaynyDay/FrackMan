@@ -28,14 +28,18 @@ bool Actor::moveDelta(StudentWorld* world, Direction dir, int& xdir, int& ydir, 
 }
 
 
-void Human::changeState(Direction dir){
-    if(dir != getDirection()){
+bool Human::changeState(Direction dir){
+    if(dir != getDirection() && dir != none){
         setDirection(dir);
-        return;
+        return false;
     }
     int xdelta = getX(), ydelta = getY();
     if(moveDelta(getWorld(), dir, xdelta, ydelta)){
         moveTo(xdelta, ydelta);
+        return true;
+    }
+    else{
+        return false;
     }
 }
 

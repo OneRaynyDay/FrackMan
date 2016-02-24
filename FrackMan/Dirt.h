@@ -31,6 +31,7 @@ public:
     virtual void consume(){};
     virtual int getSound(){ return SOUND_NONE; }
     virtual int getPoints(){ return 0; }
+    virtual void setDead(){};
     virtual bool isDead() const {return false;};
     virtual void doSomething(){}; // doesn't need to do anything
 private:

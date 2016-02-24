@@ -8,17 +8,19 @@
 
 #include <stdio.h>
 #include "FrackMan.h"
-void FrackMan::changeState(Direction dir){
+bool FrackMan::changeState(Direction dir){
     if(dir != getDirection()){
         setDirection(dir);
-        return;
+        return false;
     }
     int xdelta = getX(), ydelta = getY();
     if(moveDelta(getWorld(), dir, xdelta, ydelta)){
-        if(!getWorld()->existsBoulder(xdelta, ydelta))
+        if(!getWorld()->existsBoulder(xdelta, ydelta)){
             moveTo(xdelta, ydelta);
+            return true;
+        }
     }
-
+    return false;
 }
 
 void FrackMan::doSomething(){

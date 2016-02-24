@@ -24,6 +24,8 @@ public:
     virtual ~Actor(){};
     virtual void consume() = 0;
     virtual bool isDead() const = 0;
+    virtual int getHitpoints(){ return 0; }
+    virtual void setDead() = 0;
 
     // It must have a single virtual method called doSomething() that can
     // be called by the World to get one of the game’s actors to do
@@ -68,7 +70,7 @@ public:
     virtual int getSound(){ return SOUND_NONE; }
     virtual int getPoints(){ return 0; }
     int getHitpoints(){ return hitpoints; }
-    virtual void changeState(Direction dir);
+    virtual bool changeState(Direction dir);
     
     StudentWorld* getWorld(){
         return world;
@@ -76,6 +78,9 @@ public:
     virtual void consume(){
         if(hitpoints > 0)
             hitpoints --;
+    }
+    virtual void setDead(){
+        hitpoints = 0;
     }
     virtual bool isDead() const{
         return hitpoints <= 0;
@@ -128,7 +133,9 @@ public:
     StudentWorld* getWorld(){
         return world;
     }
-    
+    virtual void setDead(){
+        consume();
+    }
     virtual void consume(){
         dead = true;
     }

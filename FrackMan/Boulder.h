@@ -36,7 +36,7 @@ public:
         state = STABLE_STATE;
         hitpoint = WAITING_HP;
     }
-    virtual ~Boulder(){};
+    virtual ~Boulder();
     virtual void doSomething();
     virtual int getPoints(){ return SCORE_INCREASE; }
     virtual int getSound(){ return SOUND_FALLING_ROCK; }

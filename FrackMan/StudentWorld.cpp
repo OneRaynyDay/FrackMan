@@ -1,6 +1,7 @@
 #include "StudentWorld.h"
 #include <string>
 #include <iostream>
+
 using namespace std;
 
 GameWorld* createStudentWorld(string assetDir)
@@ -58,6 +59,32 @@ int StudentWorld::getRandomNum(int range){
     return (int)(rand() % range);
 }
 
+void StudentWorld::pathFindToTopRight(Actor * except){
+    //initially we have just the beginning of the path(vent down)
+    for(int i = 0; i < DIR_X; i++){
+        for(int j = 0; j < DIR_Y; j++){
+            dirMap[i][j] = Actor::none;
+            stepMap[i][j] = MAX_MANHATTAN;
+        }
+    }
+    findPath(60,60, Actor::right, 0);
+}
+
+void StudentWorld::findPath(int x, int y, Actor::Direction dir, int step, Actor* except){
+    bool flag = true;
+    if(((y < DIR_Y && x < DIR_X) && inBound(x, y)) && (y == DIRT_ROWS || !existsBlock(x, y, 4, 4, flag, except)) && step < stepMap[x][y]){
+        stepMap[x][y] = step;
+        dirMap[x][y] = dir;	// array of directions
+    }
+    else
+        return;
+    findPath(x-1, y, Actor::right, step++, except);
+    findPath(x, y-1, Actor::up, step++, except);
+    findPath(x, y+1, Actor::down, step++, except);
+    findPath(x+1, y, Actor::left, step++, except);
+}
+
+
 void StudentWorld::generateCoord(int &xf, int &yf, int xsize, int ysize){
     int x = -1, y = -1;
     do{
@@ -112,7 +139,6 @@ int StudentWorld::init(){
         Boulder* boulder = new Boulder(this, player, x, y);
         //remove all the dirt around it!
         actor.push_back(boulder);
-
     }
     /*
     for(int i = 0; i < 1; i++){
@@ -145,7 +171,13 @@ int StudentWorld::init(){
         Barrel* barrel = new Barrel(this, player, x, y);
         actor.push_back(barrel);
     }
+    protesterAddTick = min(25, 200 - curLevel);
+    curTick += protesterAddTick;
+    maxProtesters = min(15, (int)(2 + curLevel * 1.5));
     
+    //load it for initial kills
+    pathFindToTopRight();
+
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -174,7 +206,8 @@ int StudentWorld::move(){
      FrackMan.
      */
     updateText();
-    
+    pathFindToTopRight();
+
     if(curBarrels == 0){
         curLevel++;
         playSound(SOUND_FINISHED_LEVEL);
@@ -206,6 +239,15 @@ int StudentWorld::move(){
             actor.push_back(pool);
         }
     }
+    
+    if(curTick == 0 && numProtesters != maxProtesters){ // add a protester
+        curTick += protesterAddTick;
+        Protester* protester = new Protester(this, 60, 60, IID_PROTESTER);
+        actor.push_back(protester);
+        numProtesters++;
+    }
+    curTick--;
+    
     /* removes things */
     for (vector<Actor*>::iterator it = actor.begin() ; it != actor.end();){
         if((*it)->isDead()){
@@ -217,7 +259,6 @@ int StudentWorld::move(){
             it++;
         }
     }
-
     return GWSTATUS_CONTINUE_GAME;
 }
 
@@ -258,8 +299,11 @@ void StudentWorld::removeDirt(int x, int y, int size){
         }
     }
     //play sound
-    if(flag)
+    if(flag){
         playSound(SOUND_DIG);
+        //update coordinate position
+        pathFindToTopRight();
+    }
 }
 
 bool StudentWorld::existsBoulder(int x, int y, bool include, Actor* except){
@@ -275,21 +319,28 @@ bool StudentWorld::existsBoulder(int x, int y, bool include, Actor* except){
 
 bool StudentWorld::existsBlock(int x, int y, int xsize, int ysize, bool& dirtOrActor, bool include, Actor* except){
     //first loop through dirt blocks:
-    for(int i = x; i < x+xsize && i < WORLD_X; i++){
-        for(int j = y; j < y+ysize && j < DIRT_ROWS; j++){
-            if(!include && dirt[i][j] == except)
-                continue;
-            if(dirt[i][j] != nullptr && dirt[i][j]->isBlock()){
-                dirtOrActor = true;
-                return true;
-            }
-        }
+    if(existsDirt(x, y, xsize, ysize, include, except)){
+        dirtOrActor = true;
+        return true;
     }
     if(existsBoulder(x, y, include, except)){
         dirtOrActor = false;
         return true;
     }
     //then loop through actors for boulders
+    return false;
+}
+
+bool StudentWorld::existsDirt(int x, int y, int xsize, int ysize, bool include, Actor* except){
+    for(int i = x; i >= 0 && i < x+xsize && i < WORLD_X; i++){
+        for(int j = y; j >= 0 && j < y+ysize && j < DIRT_ROWS; j++){
+            if(!include && dirt[i][j] == except)
+                continue;
+            if(dirt[i][j] != nullptr && dirt[i][j]->isBlock()){
+                return true;
+            }
+        }
+    }
     return false;
 }
 
@@ -344,12 +395,64 @@ bool StudentWorld::checkDiscoveredProtester(Actor* detector){
     return flag;
 }
 bool StudentWorld::attackProtestersAt(int x, int y, int d, int hitDecrease){
-    return attackHumansAt(x, y, d, hitDecrease, actor);
+    vector<Actor*> actors;
+    for(int i = 0; i < actor.size(); i++){
+        if(actor[i]->getHitpoints() != 0){
+            actors.push_back(actor[i]);
+        }
+    }
+    return attackHumansAt(x, y, d, hitDecrease, actors);
 }
-bool StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease){
+bool StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease, bool directionMatters, Actor* detector){
     vector<Actor*> l;
     l.push_back(player);
+    if(directionMatters){
+        //decide beforehand to whether do anything:
+        if(dirTowardsFrackMan(detector->getX(), detector->getY()) != detector->getDirection())
+            return false;
+    }
     return attackHumansAt(x, y, d, hitDecrease, l);
+}
+
+Actor::Direction StudentWorld::dirTowardsFrackMan(int x, int y){
+    int playerX = player->getX(), playerY = player->getY();
+    if(playerX == x){//same on the x coordinate
+        if(playerY < y)//then player's below
+            return Actor::down;
+        else
+            return Actor::up;
+    }
+    else if(playerY == y){
+        if(playerX < x)
+            return Actor::left;
+        else
+            return Actor::right;
+    }
+    else
+        return Actor::none;
+}
+
+bool StudentWorld::canSeeProtester(int x, int y){
+    //flush out the dirt before this happens
+    removeDirt(player->getX(), player->getY(), 4);
+    if(!straightPathWithFrackMan(x,y))
+        return false;
+    int startx = min(x, player->getX()), endx = max(x, player->getX());
+    int starty = min(y, player->getY()), endy = max(y, player->getY());
+    bool flag = true;
+    for(int i = startx; i < endx; i++){
+        if(existsBlock(i, starty, 4,4, flag))
+            return false;
+    }
+    for(int i = starty; i < endy; i++){
+        if(existsBlock(startx, i, 4,4, flag))
+            return false;
+    }
+    return true;
+}
+
+bool StudentWorld::straightPathWithFrackMan(int x, int y){
+    return x == player->getX() || y == player->getY();
 }
 
 bool StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector<Actor*> list){
@@ -358,13 +461,24 @@ bool StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector<A
         if(!list[i]->isHuman()) continue;
         if(dist(list[i]->getX(), list[i]->getY(), x, y) <= d){
             hitSomeone = true;
-            for(int j = 0; j < hitDecrease; j++){
-                list[i]->consume();
+            if(hitDecrease == 100){
+                list[i]->setDead();
+                playSound(SOUND_PLAYER_GIVE_UP);
+            }
+            else{
+                for(int j = 0; j < hitDecrease; j++){
+                    list[i]->consume();
+                }
+                if(list[i]->isDead())
+                    playSound(SOUND_PLAYER_GIVE_UP);
+                else
+                    playSound(SOUND_PROTESTER_ANNOYED);
             }
         }
     }
     return hitSomeone;
 }
+
 void StudentWorld::squirt(int x, int y, Actor::Direction dir){
     Squirt* sq = new Squirt(this, player, dir, x, y);
     playSound(SOUND_PLAYER_SQUIRT);
