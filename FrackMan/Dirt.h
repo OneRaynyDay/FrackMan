@@ -27,6 +27,9 @@ public:
     };
     virtual ~Dirt(){};
     virtual bool isBlock(){ return true; }
+    virtual bool isStrong(){
+        return true; //can't be bribed
+    }
     /* We don't need these. We have a separate vector of Dirt */
     virtual void consume(){};
     virtual int getSound(){ return SOUND_NONE; }

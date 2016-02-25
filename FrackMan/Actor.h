@@ -26,7 +26,7 @@ public:
     virtual bool isDead() const = 0;
     virtual int getHitpoints(){ return 0; }
     virtual void setDead() = 0;
-
+    virtual bool isStrong() = 0;
     // It must have a single virtual method called doSomething() that can
     // be called by the World to get one of the game’s actors to do
     // something.
@@ -71,7 +71,9 @@ public:
     virtual int getPoints(){ return 0; }
     int getHitpoints(){ return hitpoints; }
     virtual bool changeState(Direction dir);
-    
+    virtual bool isStrong(){
+        return false; //can be bribed
+    }
     StudentWorld* getWorld(){
         return world;
     }
@@ -141,6 +143,9 @@ public:
     }
     virtual bool isDead() const{
         return dead;
+    }
+    virtual bool isStrong(){
+        return true; //can't be bribed
     }
 private:
     FrackMan* player;

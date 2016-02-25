@@ -21,9 +21,16 @@ void Squirt::doSomething(){
      4. Otherwise, the Squirt moves one square forward in its currently-facing direction, and then returns.
      */
     if(getWorld()->checkDiscoveredProtester(this)){
-        consume();
-        hit = true;
-        getWorld()->attackProtestersAt(getX(), getY(), 4, 2);
+        int state = -1;
+        if(getWorld()->attackProtestersAt(getX(), getY(), 4, 2, state)){
+            hit = true;
+            consume();
+            if(state == 0)
+                getWorld()->playSound(SOUND_PROTESTER_ANNOYED);
+            else if(state == 1)
+                getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
+            return;
+        }
     }
     if(hitpoints == 0){
         consume();

@@ -49,8 +49,12 @@ void Boulder::doSomething(){
         else{
             /*if(getWorld()->attackProtestersAt(x, y, 3, DECREASE_HP) || getWorld()->attackFrackManAt(x, y, 3, DECREASE_HP))
                 std::cout << x << "\t" << y << "\t" << getPlayer()->getX() << "\t" << getPlayer()->getY() << "\t" << std::endl;*/
-            getWorld()->attackProtestersAt(x, y, 3, DECREASE_HP);
-            getWorld()->attackFrackManAt(x, y, 3, DECREASE_HP);
+            int state = -1;
+            if(getWorld()->attackProtestersAt(x, y, 3, DECREASE_HP, state)){
+                getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
+            }
+            if(getWorld()->attackFrackManAt(x, y, 3, DECREASE_HP)){
+            }
             moveTo(x, y);
         }
          //must constantly update position

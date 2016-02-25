@@ -35,7 +35,7 @@ public:
     virtual ~Squirt();
     virtual void doSomething();
     virtual int getPoints(){ return 0; }
-    virtual int getSound(){ return SOUND_PROTESTER_ANNOYED; }
+    virtual int getSound(){ return SOUND_NONE; }
     bool hitSomeone(){ return hit; }
     void changeState(int x, int y, int size);
 private:

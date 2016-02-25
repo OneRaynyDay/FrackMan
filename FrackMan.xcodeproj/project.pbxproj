@@ -19,7 +19,7 @@
 		544B8BE01C71F44A0029622F /* Nugget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BDF1C71F44A0029622F /* Nugget.cpp */; settings = {ASSET_TAGS = (); }; };
 		544B8BE41C728C4B0029622F /* Sonar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BE31C728C4B0029622F /* Sonar.cpp */; settings = {ASSET_TAGS = (); }; };
 		544B8BE71C72A2160029622F /* Pool.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 544B8BE61C72A2160029622F /* Pool.cpp */; settings = {ASSET_TAGS = (); }; };
-		545C7FA51C7DB3A800EAA56A /* HardcoreProtester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 545C7FA41C7DB3A800EAA56A /* HardcoreProtester.cpp */; settings = {ASSET_TAGS = (); }; };
+		545C7FAD1C7E78EB00EAA56A /* HardcoreProtester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 545C7FAC1C7E78EB00EAA56A /* HardcoreProtester.cpp */; settings = {ASSET_TAGS = (); }; };
 		54FFAA691C7411BE00B840E7 /* Squirt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54FFAA681C7411BE00B840E7 /* Squirt.cpp */; settings = {ASSET_TAGS = (); }; };
 		54FFAA6B1C74EE2A00B840E7 /* Boulder.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54FFAA6A1C74EE2A00B840E7 /* Boulder.cpp */; settings = {ASSET_TAGS = (); }; };
 		54FFAA6E1C76FDCA00B840E7 /* Protester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 54FFAA6D1C76FDCA00B840E7 /* Protester.cpp */; settings = {ASSET_TAGS = (); }; };
@@ -69,8 +69,8 @@
 		544B8BE31C728C4B0029622F /* Sonar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sonar.cpp; sourceTree = "<group>"; };
 		544B8BE51C72A1220029622F /* Pool.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Pool.h; sourceTree = "<group>"; };
 		544B8BE61C72A2160029622F /* Pool.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Pool.cpp; sourceTree = "<group>"; };
-		545C7FA31C7DB39700EAA56A /* HardcoreProtester.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HardcoreProtester.h; sourceTree = "<group>"; };
-		545C7FA41C7DB3A800EAA56A /* HardcoreProtester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardcoreProtester.cpp; sourceTree = "<group>"; };
+		545C7FAC1C7E78EB00EAA56A /* HardcoreProtester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardcoreProtester.cpp; sourceTree = "<group>"; };
+		545C7FAF1C7E796600EAA56A /* HardcoreProtester.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HardcoreProtester.h; sourceTree = "<group>"; };
 		54FFAA671C7411B000B840E7 /* Squirt.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Squirt.h; sourceTree = "<group>"; };
 		54FFAA681C7411BE00B840E7 /* Squirt.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Squirt.cpp; sourceTree = "<group>"; };
 		54FFAA6A1C74EE2A00B840E7 /* Boulder.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Boulder.cpp; sourceTree = "<group>"; };
@@ -137,9 +137,9 @@
 				544B8BDE1C71F2510029622F /* Nugget.h */,
 				544B8BDF1C71F44A0029622F /* Nugget.cpp */,
 				544B8BE21C728C3A0029622F /* Sonar.h */,
-				545C7FA31C7DB39700EAA56A /* HardcoreProtester.h */,
-				545C7FA41C7DB3A800EAA56A /* HardcoreProtester.cpp */,
 				544B8BE11C71FAB90029622F /* Protester.h */,
+				545C7FAF1C7E796600EAA56A /* HardcoreProtester.h */,
+				545C7FAC1C7E78EB00EAA56A /* HardcoreProtester.cpp */,
 				54FFAA6D1C76FDCA00B840E7 /* Protester.cpp */,
 				544B8BE31C728C4B0029622F /* Sonar.cpp */,
 				544B8BE51C72A1220029622F /* Pool.h */,
@@ -209,7 +209,7 @@
 				54FFAA6E1C76FDCA00B840E7 /* Protester.cpp in Sources */,
 				544B8BCD1C71590A0029622F /* Dirt.cpp in Sources */,
 				544B8BE41C728C4B0029622F /* Sonar.cpp in Sources */,
-				545C7FA51C7DB3A800EAA56A /* HardcoreProtester.cpp in Sources */,
+				545C7FAD1C7E78EB00EAA56A /* HardcoreProtester.cpp in Sources */,
 				54FFAA6B1C74EE2A00B840E7 /* Boulder.cpp in Sources */,
 				544B8BE01C71F44A0029622F /* Nugget.cpp in Sources */,
 				544B8BE71C72A2160029622F /* Pool.cpp in Sources */,

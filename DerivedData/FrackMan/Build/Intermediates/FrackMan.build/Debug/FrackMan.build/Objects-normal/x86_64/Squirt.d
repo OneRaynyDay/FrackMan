@@ -17,4 +17,5 @@ dependencies: \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Protester.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Barrel.h \
   /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Sonar.h \
-  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Pool.h
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/Pool.h \
+  /Users/hongshuhong/Documents/CS\ 32/FrackMan/FrackMan/HardcoreProtester.h

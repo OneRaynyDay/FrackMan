@@ -17,6 +17,7 @@
 
 class Nugget : public Item{
     static const int SCORE_INCREASE = 10;
+    static const int HIT_DECREASE = 6;
 public:
     /*1. All Gold Nuggets must have an image ID of IID_GOLD.
      2. All Gold Nuggets must have their x,y location specified for them when they are

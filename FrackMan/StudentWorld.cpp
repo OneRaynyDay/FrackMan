@@ -8,7 +8,6 @@ GameWorld* createStudentWorld(string assetDir)
 {
 	return new StudentWorld(assetDir);
 }
-
 // Students:  Add code to this file (if you wish), StudentWorld.h, Actor.h and Actor.cpp
 StudentWorld::~StudentWorld()
 {
@@ -171,9 +170,13 @@ int StudentWorld::init(){
         Barrel* barrel = new Barrel(this, player, x, y);
         actor.push_back(barrel);
     }
-    protesterAddTick = min(25, 200 - curLevel);
+    protesterAddTick = max(25, 200 - curLevel);
     curTick += protesterAddTick;
     maxProtesters = min(15, (int)(2 + curLevel * 1.5));
+    
+    Protester* protester = new Protester(this, 60, 60, IID_PROTESTER, Protester::INIT_HITPOINTS);
+    actor.push_back(protester);
+    numProtesters++;
     
     //load it for initial kills
     pathFindToTopRight();
@@ -207,7 +210,6 @@ int StudentWorld::move(){
      */
     updateText();
     pathFindToTopRight();
-
     if(curBarrels == 0){
         curLevel++;
         playSound(SOUND_FINISHED_LEVEL);
@@ -240,10 +242,18 @@ int StudentWorld::move(){
         }
     }
     
-    if(curTick == 0 && numProtesters != maxProtesters){ // add a protester
+    if(curTick <= 0 && numProtesters != maxProtesters){ // add a protester
+        int probabilityOfHardcore = min(90, curLevel * 10 + 30);
+        if(rand() % 100 > probabilityOfHardcore){
+            Protester* protester = new Protester(this, 60, 60, IID_PROTESTER, Protester::INIT_HITPOINTS);
+            actor.push_back(protester);
+        }
+        else{
+            HardcoreProtester* protester = new HardcoreProtester(this, 60, 60);
+        }
         curTick += protesterAddTick;
-        Protester* protester = new Protester(this, 60, 60, IID_PROTESTER);
-        actor.push_back(protester);
+        
+        
         numProtesters++;
     }
     curTick--;
@@ -387,49 +397,54 @@ bool StudentWorld::checkDiscoveredProtester(Actor* detector){
 
         int d = dist(actor[i]->getX(), actor[i]->getY(), detector->getX(), detector->getY());
         if(d <= 3){
-            detector->consume();
             playSound(detector->getSound());
             flag = true;
         }
     }
     return flag;
 }
-bool StudentWorld::attackProtestersAt(int x, int y, int d, int hitDecrease){
-    vector<Actor*> actors;
-    for(int i = 0; i < actor.size(); i++){
-        if(actor[i]->getHitpoints() != 0){
-            actors.push_back(actor[i]);
-        }
-    }
-    return attackHumansAt(x, y, d, hitDecrease, actors);
+bool StudentWorld::attackProtestersAt(int x, int y, int d, int hitDecrease, int& state, bool onlyAttackWeak){
+//    vector<Actor*> actors;
+//    std::cout<<"-----" << std::endl;
+//
+//    for(int i = 0; i < actor.size(); i++){
+//            actors.push_back(actor[i]);
+//            std::cout<<"found protester at " << actor[i]->getX() << " ... " << actor[i]->getY() << std::endl;
+//        }
+//    }
+    return attackHumansAt(x, y, d, hitDecrease, actor, state, onlyAttackWeak);
 }
 bool StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease, bool directionMatters, Actor* detector){
+    /* The state is 0 for did not kill anyone, 1 for killed someone */
     vector<Actor*> l;
+    int state = -1;
     l.push_back(player);
     if(directionMatters){
         //decide beforehand to whether do anything:
+        Actor::Direction neededDir = dirTowardsFrackMan(detector->getX(), detector->getY());
         if(dirTowardsFrackMan(detector->getX(), detector->getY()) != detector->getDirection())
-            return false;
+            detector->setDirection(neededDir);
     }
-    return attackHumansAt(x, y, d, hitDecrease, l);
+    return attackHumansAt(x, y, d, hitDecrease, l, state);
 }
 
 Actor::Direction StudentWorld::dirTowardsFrackMan(int x, int y){
     int playerX = player->getX(), playerY = player->getY();
-    if(playerX == x){//same on the x coordinate
-        if(playerY < y)//then player's below
-            return Actor::down;
-        else
-            return Actor::up;
-    }
-    else if(playerY == y){
+    if(playerY == y){
         if(playerX < x)
             return Actor::left;
         else
             return Actor::right;
     }
+    else if(playerX == x){//same on the x coordinate
+        if(playerY < y)//then player's below
+            return Actor::down;
+        else
+            return Actor::up;
+    }
     else
         return Actor::none;
+    
 }
 
 bool StudentWorld::canSeeProtester(int x, int y){
@@ -437,9 +452,14 @@ bool StudentWorld::canSeeProtester(int x, int y){
     removeDirt(player->getX(), player->getY(), 4);
     if(!straightPathWithFrackMan(x,y))
         return false;
+
     int startx = min(x, player->getX()), endx = max(x, player->getX());
     int starty = min(y, player->getY()), endy = max(y, player->getY());
     bool flag = true;
+    if(dist(startx, starty, endx, endy) < 4){
+        //you're technically looking INTO frackman so I guess return true
+        return true;
+    }
     for(int i = startx; i < endx; i++){
         if(existsBlock(i, starty, 4,4, flag))
             return false;
@@ -455,28 +475,30 @@ bool StudentWorld::straightPathWithFrackMan(int x, int y){
     return x == player->getX() || y == player->getY();
 }
 
-bool StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector<Actor*> list){
-    bool hitSomeone = false;
+bool StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector<Actor*> list, int& state, bool onlyKillWeak){
     for(int i = 0; i < list.size(); i++){
         if(!list[i]->isHuman()) continue;
-        if(dist(list[i]->getX(), list[i]->getY(), x, y) <= d){
-            hitSomeone = true;
+        if(list[i]->getHitpoints() <= 0){
+            continue;
+        }
+        else if(dist(list[i]->getX(), list[i]->getY(), x, y) <= d && (!list[i]->isStrong() || (list[i]->isStrong() && !onlyKillWeak))){
             if(hitDecrease == 100){
                 list[i]->setDead();
-                playSound(SOUND_PLAYER_GIVE_UP);
+                state = 1;
             }
             else{
                 for(int j = 0; j < hitDecrease; j++){
                     list[i]->consume();
                 }
-                if(list[i]->isDead())
-                    playSound(SOUND_PLAYER_GIVE_UP);
+                if(list[i]->getHitpoints() <= 0)
+                    state = 1;
                 else
-                    playSound(SOUND_PROTESTER_ANNOYED);
+                    state = 0;
             }
+            return true;
         }
     }
-    return hitSomeone;
+    return false;
 }
 
 void StudentWorld::squirt(int x, int y, Actor::Direction dir){

@@ -121,7 +121,10 @@ bool Protester::moveDelta(StudentWorld* world, Direction dir, int& xdir, int& yd
 }
 
 bool Protester::changeState(Direction dir){
-    if(dir != getDirection() && dir != none){
+    if(dir == none){
+        return false;
+    }
+    if(dir != getDirection()){
         setDirection(dir);
         return false;
     }
@@ -140,17 +143,15 @@ void Protester::consume(){
     if(isDeadState())
         return;
     Human::consume();
+    restTick = min(50, 100 - getWorld()->getLevel()* 10);
     if(isDeadState()){
-        getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
-    }
-    else{
-        getWorld()->playSound(SOUND_PROTESTER_ANNOYED);
+        restTick = 0;
     }
 }
 
 void Protester::setDead(){
     Human::setDead();
-    getWorld()->playSound(SOUND_PROTESTER_GIVE_UP);
+    restTick = 0;
 }
 
 
@@ -161,8 +162,11 @@ void Protester::doSomething(){
     /* 2.If the Regular Protester is in a “rest state” during the current tick, it must do nothing other than update its resting tick count, and immediately return. */
     if(restTick > 0){
         restTick--;
+        if(shoutTick > 0)
+            shoutTick--;
         return;
     }
+
     /* 3. Otherwise, if the Regular Protester is in a leave-the-oil-field state (because their hit points reached zero due to being repeatedly squirted by the FrackMan’s squirt gun or bonked by a falling Boulder), then: */
     if(isDeadState()){
         /* a. If the Regular Protester is at its exit point (at location x=60, y=60) then it will immediately set its status to dead so that it will be removed from the game at the end of the current tick (by your StudentWorld class).*/
@@ -175,6 +179,7 @@ void Protester::doSomething(){
         restTick += 4;
         return;
     }
+
     /* 4. Otherwise, the Regular Protester will check to see if they are within a distance of 4 units of the FrackMan, AND they are currently facing in the FrackMan’s direction2. If both are true and the Regular Protester hasn’t shouted within its last non-resting 15 ticks3, then the Regular Protester will:
         a. Play the shouting sound: SOUND_PROTESTER_YELL
         b. Inform the FrackMan that he’s been annoyed for a total of 2 annoyance points (deducting 2 points from the FrackMan’s hit points, and possibly
@@ -188,17 +193,21 @@ void Protester::doSomething(){
         if(getWorld()->attackFrackManAt(getX(), getY(), 4, DAMAGE, true, this)){
             getWorld()->playSound(SOUND_PROTESTER_YELL);
             shoutTick += SHOUT_WAIT;
-            restTick += 15;
+            restTick += SHOUT_WAIT;
             return;
         }
+        else{
+            //was unsuccessful
+        }
     }
+
     /*5. Otherwise, if the Regular Protester:
         a. Is in a straight horizontal or vertical line of sight to the FrackMan (even if
           the Regular Protester isn’t currently facing the Frackman), and
         b. Is more than 4 units away from the FrackMan – that is, the radius from the
         Regular Protester and the FrackMan is greater than 4.0 units away, and
         c. Could actually move the entire way to the FrackMan with no Dirt or
-        Boulders blocking its path4 (assuming it kept walking straight over the
+        Boulders blocking its path (assuming it kept walking straight over the
                                      next N turns) */
     if(getWorld()->canSeeProtester(getX(), getY())){
         /* Then the Regular Protester will:
@@ -251,7 +260,11 @@ void Protester::doSomething(){
             setDirection(dir);
             step = determineRandomSteps();
         }
+        int x = getX(), y = getY();
         if(!changeState(getDirection())){
+            step = 0;
+        }
+        else if(x == getX() && y == getY()){
             step = 0;
         }
     }

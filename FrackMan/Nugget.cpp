@@ -14,7 +14,6 @@ Nugget::~Nugget(){
         getPlayer()->increaseNugget(1);
     }
     else{
-        /*DO SOMETHING HERE TO THE PROTESTERS*/
     }
 }
 
@@ -29,6 +28,10 @@ void Nugget::doSomething(){
             return;
         }
         hitpoints--;
-        getWorld()->checkDiscoveredProtester(this);
+        if(getWorld()->checkDiscoveredProtester(this)){
+            int flag = -1;
+            getWorld()->attackProtestersAt(getX(), getY(), 4, HIT_DECREASE, flag, true);
+            consume();
+        }
     }
 }

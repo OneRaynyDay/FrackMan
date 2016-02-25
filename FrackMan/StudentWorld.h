@@ -14,6 +14,7 @@
 #include "Pool.h"
 #include "Squirt.h"
 #include "Protester.h"
+#include "HardcoreProtester.h"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -116,9 +117,9 @@ public:
     bool blank(int x, int y, int tx, int ty);
     void generateCoord(int& x, int& y, int xsize = 1, int ysize = 1);
     void populateWater(int &xf, int&yf);
-    bool attackProtestersAt(int x, int y, int dist, int hitDecrease);
+    bool attackProtestersAt(int x, int y, int dist, int hitDecrease, int& state, bool onlyKillWeak = false);
     bool attackFrackManAt(int x, int y, int dist, int hitDecrease, bool directionMatters = false, Actor* detector = nullptr);
-    bool attackHumansAt(int x, int y, int dist, int hitDecrease, vector<Actor*> list);
+    bool attackHumansAt(int x, int y, int dist, int hitDecrease, vector<Actor*> list, int& state, bool onlyKillWeak = false);
     bool inTunnel(int x, int y, int xsize = 1, int ysize = 1);
     /*
      Protester navigation function
