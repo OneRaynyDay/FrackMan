@@ -46,9 +46,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "5"
-            endingLineNumber = "5"
-            landmarkName = "Actor::moveDelta(StudentWorld* world, Direction dir, int&amp; xdir, int&amp; ydir, int steps)"
-            landmarkType = "5">
+            endingLineNumber = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -63,7 +61,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "31"
             endingLineNumber = "31"
-            landmarkName = "Human::changeState(Direction dir)"
+            landmarkName = "Actor::moveInDirection()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -94,7 +92,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "28"
-            endingLineNumber = "28">
+            endingLineNumber = "28"
+            landmarkName = "StudentWorld::~StudentWorld()"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -109,7 +109,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "107"
             endingLineNumber = "107"
-            landmarkName = "StudentWorld::init()"
+            landmarkName = "StudentWorld::pathFindToTopRight(Actor * except)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -205,7 +205,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "233"
             endingLineNumber = "233"
-            landmarkName = "StudentWorld::move()"
+            landmarkName = "StudentWorld::init()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -221,7 +221,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "234"
             endingLineNumber = "234"
-            landmarkName = "StudentWorld::move()"
+            landmarkName = "StudentWorld::init()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -237,7 +237,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "232"
             endingLineNumber = "232"
-            landmarkName = "StudentWorld::move()"
+            landmarkName = "StudentWorld::init()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -253,7 +253,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "230"
             endingLineNumber = "230"
-            landmarkName = "StudentWorld::move()"
+            landmarkName = "StudentWorld::init()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -269,7 +269,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "162"
             endingLineNumber = "162"
-            landmarkName = "StudentWorld::init()"
+            landmarkName = "StudentWorld::generateCoord(int &amp;xf, int &amp;yf, int xsize, int ysize)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -301,7 +301,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "81"
             endingLineNumber = "81"
-            landmarkName = "consume()"
+            landmarkName = "consume(int a = 1)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -333,7 +333,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "496"
             endingLineNumber = "496"
-            landmarkName = "StudentWorld::attackHumansAt(int x, int y, int d, int hitDecrease, vector&lt;Actor*&gt; list, int&amp; state, bool onlyKillWeak)"
+            landmarkName = "StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease, bool directionMatters, Actor* detector)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -477,7 +477,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "323"
             endingLineNumber = "323"
-            landmarkName = "StudentWorld::existsBoulder(int x, int y, bool include, Actor* except)"
+            landmarkName = "StudentWorld::move()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -493,7 +493,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "321"
             endingLineNumber = "321"
-            landmarkName = "StudentWorld::existsBoulder(int x, int y, bool include, Actor* except)"
+            landmarkName = "StudentWorld::move()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -541,7 +541,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "315"
             endingLineNumber = "315"
-            landmarkName = "StudentWorld::removeDirt(int x, int y, int size)"
+            landmarkName = "StudentWorld::move()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -573,7 +573,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "128"
             endingLineNumber = "128"
-            landmarkName = "StudentWorld::init()"
+            landmarkName = "StudentWorld::computePathToFrackMan(int x, int y, int M)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -589,7 +589,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "127"
             endingLineNumber = "127"
-            landmarkName = "StudentWorld::init()"
+            landmarkName = "StudentWorld::computePathToFrackMan(int x, int y, int M)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -621,7 +621,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "69"
             endingLineNumber = "69"
-            landmarkName = "StudentWorld::pathFindToTopRight(Actor * except)"
+            landmarkName = "StudentWorld::pathFindHelper(int x, int y, Actor::Direction dir, dirCoord map[][DIR_Y])"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -636,7 +636,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "60"
-            endingLineNumber = "60">
+            endingLineNumber = "60"
+            landmarkName = "StudentWorld::getRandomNum(int range)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -651,7 +653,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "306"
             endingLineNumber = "306"
-            landmarkName = "StudentWorld::removeDirt(int x, int y, int size)"
+            landmarkName = "StudentWorld::move()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -731,7 +733,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "460"
             endingLineNumber = "460"
-            landmarkName = "StudentWorld::canSeeProtester(int x, int y)"
+            landmarkName = "StudentWorld::checkDiscoveredFrackMan(Actor* detector)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -747,7 +749,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "461"
             endingLineNumber = "461"
-            landmarkName = "StudentWorld::canSeeProtester(int x, int y)"
+            landmarkName = "StudentWorld::checkDiscoveredFrackMan(Actor* detector)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1018,9 +1020,7 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "61"
-            endingLineNumber = "61"
-            landmarkName = "StudentWorld::pathFindToTopRight(Actor * except)"
-            landmarkType = "5">
+            endingLineNumber = "61">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1051,7 +1051,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "70"
             endingLineNumber = "70"
-            landmarkName = "StudentWorld::pathFindToTopRight(Actor * except)"
+            landmarkName = "StudentWorld::pathFindHelper(int x, int y, Actor::Direction dir, dirCoord map[][DIR_Y])"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1099,7 +1099,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "457"
             endingLineNumber = "457"
-            landmarkName = "StudentWorld::canSeeProtester(int x, int y)"
+            landmarkName = "StudentWorld::checkDiscoveredFrackMan(Actor* detector)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1131,7 +1131,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "407"
             endingLineNumber = "407"
-            landmarkName = "StudentWorld::attackProtestersAt(int x, int y, int d, int hitDecrease, int&amp; state, bool onlyAttackWeak)"
+            landmarkName = "StudentWorld::existsBoulder(int x, int y, bool include, Actor* except)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1146,7 +1146,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "473"
-            endingLineNumber = "473">
+            endingLineNumber = "473"
+            landmarkName = "StudentWorld::checkDiscoveredFrackMan(Actor* detector)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1160,7 +1162,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "473"
-            endingLineNumber = "473">
+            endingLineNumber = "473"
+            landmarkName = "StudentWorld::checkDiscoveredFrackMan(Actor* detector)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1174,7 +1178,9 @@
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "477"
-            endingLineNumber = "477">
+            endingLineNumber = "477"
+            landmarkName = "StudentWorld::checkDiscoveredFrackMan(Actor* detector)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -1301,7 +1307,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "418"
             endingLineNumber = "418"
-            landmarkName = "StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease, bool directionMatters, Actor* detector)"
+            landmarkName = "StudentWorld::existsBlock(int x, int y, int xsize, int ysize, bool&amp; dirtOrActor, bool include, Actor* except)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -1333,7 +1339,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "419"
             endingLineNumber = "419"
-            landmarkName = "StudentWorld::attackFrackManAt(int x, int y, int d, int hitDecrease, bool directionMatters, Actor* detector)"
+            landmarkName = "StudentWorld::existsBlock(int x, int y, int xsize, int ysize, bool&amp; dirtOrActor, bool include, Actor* except)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

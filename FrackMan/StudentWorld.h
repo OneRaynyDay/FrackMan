@@ -5,16 +5,7 @@
 
 #include "GameWorld.h"
 #include "GameConstants.h"
-#include "Dirt.h"
-#include "Boulder.h"
-#include "FrackMan.h"
-#include "Barrel.h"
-#include "Nugget.h"
-#include "Sonar.h"
-#include "Pool.h"
-#include "Squirt.h"
-#include "Protester.h"
-#include "HardcoreProtester.h"
+#include "Actor.h"
 #include <vector>
 #include <string>
 #include <sstream>
@@ -28,7 +19,7 @@ using namespace std;
 // Students:  Add code to this file, StudentWorld.cpp, Actor.h, and Actor.cpp
 
 class FrackMan;
-
+struct dirCoord;
 class StudentWorld : public GameWorld
 {
     static const int DIRT_ROWS = 60;
@@ -40,6 +31,30 @@ class StudentWorld : public GameWorld
     static const int DIR_X = 61;
     static const int DIR_Y = 61;
     static const int MAX_MANHATTAN = 150;
+    struct dirCoord{
+        dirCoord(){
+            x = 0;
+            y = 0;
+            dir = Actor::none;
+            dist = 150; //greater than the entire manhattan distance of the map.
+        }
+        dirCoord(int xe, int ye){
+            x = xe;
+            y = ye;
+            dir = Actor::none;
+            dist = 150; //greater than the entire manhattan distance of map
+        }
+        dirCoord(int xe, int ye, Actor::Direction dire){
+            x = xe;
+            y = ye;
+            dir = dire;
+            dist = 150;
+        }
+        int x;
+        int y;
+        int dist;
+        Actor::Direction dir;
+    };
 public:
     // Implement a constructor for this class that initializes all member
     // variables required for proper gameplay.
@@ -61,8 +76,10 @@ public:
         }
         for(int i = 0; i < DIR_X; i++){
             for(int j = 0; j < DIR_Y; j++){
-                dirMap[i][j] = Actor::none;
-                stepMap[i][j] = MAX_MANHATTAN;
+                dirMap[i][j].x = i;
+                dirMap[i][j].y = j;
+                hardcoreMap[i][j].x = i;
+                hardcoreMap[i][j].y = j;
             }
         }
         /* MORE TO WRITE HERE ... */
@@ -117,21 +134,26 @@ public:
     bool blank(int x, int y, int tx, int ty);
     void generateCoord(int& x, int& y, int xsize = 1, int ysize = 1);
     void populateWater(int &xf, int&yf);
-    bool attackProtestersAt(int x, int y, int dist, int hitDecrease, int& state, bool onlyKillWeak = false);
-    bool attackFrackManAt(int x, int y, int dist, int hitDecrease, bool directionMatters = false, Actor* detector = nullptr);
-    bool attackHumansAt(int x, int y, int dist, int hitDecrease, vector<Actor*> list, int& state, bool onlyKillWeak = false);
+    bool attackProtestersAt(int x, int y, int dist, int hitDecrease, int& state, bool killMultiple, bool onlyKillWeak = false);
+    bool attackFrackManAt(int x, int y, int dist, int hitDecrease, bool directionMatters = false,  Actor* detector = nullptr);
+    bool attackHumansAt(int x, int y, int dist, int hitDecrease, vector<Actor*> list, int& state, bool killMultiple, bool onlyKillWeak = false);
     bool inTunnel(int x, int y, int xsize = 1, int ysize = 1);
+
     /*
      Protester navigation function
      */
-    void findPath(int x, int y, Actor::Direction dir, int step, Actor * except=nullptr);
     void pathFindToTopRight(Actor * except=nullptr);
     Actor::Direction getTopRightDir(int x, int y){
-        return dirMap[x][y];
+        return dirMap[x][y].dir;
+    }
+    Actor::Direction getFrackManDir(int x, int y){
+        return hardcoreMap[x][y].dir;
     }
     bool canSeeProtester(int x, int y);
     bool straightPathWithFrackMan(int x, int y);
     Actor::Direction dirTowardsFrackMan(int x, int y);
+    void computePathToFrackMan(int x, int y, int M);
+    bool pathFindHelper(int x, int y, Actor::Direction dir, dirCoord map[][DIR_Y]);
     
     bool checkDiscoveredFrackMan(Actor* detector);
     bool checkDiscoveredProtester(Actor* detector);
@@ -142,6 +164,10 @@ public:
         int d = (int)(pow(pow(x1 - x2, 2) + pow(y1 - y2, 2), 0.5));
         //std::cout<< "x1 : " << x1 << " x2 : " << x2 << " y1 : " << y1 << " y2 : " << y2 << "d : " << d << std::endl;
         return d;
+    }
+    int manhattanDistFromPlayer(int x1, int y1){
+        int x2 = player->getX(), y2 = player->getY();
+        return abs(x2-x1) + abs(y2-y1);
     }
     
     void decreaseBarrels(){
@@ -154,33 +180,9 @@ private:
     track of all Dirt in the oil field as well as the FrackMan object.
     You may ignore all other items in the oil field such as Boulders,
     Barrels of oil, Protesters, Nuggets, etc. for part #1. */
-    struct dirCoord{
-        dirCoord(){
-            x = 0;
-            y = 0;
-            dir = Actor::none;
-            dist = 150; //greater than the entire manhattan distance of the map.
-        }
-        dirCoord(int xe, int ye){
-            x = xe;
-            y = ye;
-            dir = Actor::none;
-            dist = 150; //greater than the entire manhattan distance of map
-        }
-        dirCoord(int xe, int ye, Actor::Direction dire){
-            x = xe;
-            y = ye;
-            dir = dire;
-            dist = 150;
-        }
-        int x;
-        int y;
-        int dist;
-        Actor::Direction dir;
-    };
-    Actor::Direction dirMap[DIR_X][DIR_Y];
-    int stepMap[DIR_X][DIR_Y];
-
+    
+    dirCoord dirMap[DIR_X][DIR_Y];
+    dirCoord hardcoreMap[DIR_X][DIR_Y];
     Dirt* dirt[WORLD_X][DIRT_ROWS];
     FrackMan* player;
     vector<Actor*> actor;

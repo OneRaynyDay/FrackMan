@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "B41D64A6F154955F5DD7B0300C0065153F61C270",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "EDE927A5BE01F4092B7044F85B49ACFDBB7AF330" : 0,
+    "B41D64A6F154955F5DD7B0300C0065153F61C270" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "A524323C-24CA-4A44-B380-30CD3637CE72",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "EDE927A5BE01F4092B7044F85B49ACFDBB7AF330" : "",
+    "B41D64A6F154955F5DD7B0300C0065153F61C270" : "FrackMan\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "FrackMan",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "FrackMan.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/OneRaynyDay\/FrackMan.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "B41D64A6F154955F5DD7B0300C0065153F61C270"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/OneRaynyDay\/CS-32.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "EDE927A5BE01F4092B7044F85B49ACFDBB7AF330"
+    }
+  ]
+}
